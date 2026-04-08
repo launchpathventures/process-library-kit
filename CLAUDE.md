@@ -7,6 +7,18 @@ A cumulative library of repeatable processes extracted from real work. Each proc
 - `/extract-process` — After completing work, analyze what was done and capture it as a reusable process with its own slash command
 - `/list-processes` — Browse all available processes and their slash commands
 - `/{process-name}` — Each process gets its own slash command for direct invocation
+- `/update-process-library` — Check for and install framework updates
+
+## Update Check
+
+When any process library command is run (`/extract-process`, `/run-process`, `/list-processes`, or any auto-generated process command), do a quick version check in the background:
+
+1. Read `process-library/VERSION` for the local version
+2. Run: `curl -s https://raw.githubusercontent.com/launchpathventures/process-library-kit/main/process-library/VERSION`
+3. If the remote version is higher, add a one-line note at the end of your response: "A Process Library update is available (v{local} → v{remote}). Run `/update-process-library` to update."
+4. If the check fails (network issue) or versions match, say nothing.
+
+This check must NEVER block or delay the main command. Do the work first, mention the update at the end if applicable.
 
 ## Where Processes Live
 

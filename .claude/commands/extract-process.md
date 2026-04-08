@@ -151,11 +151,20 @@ After presenting output and evaluation, ask:
 2. **Mostly worked, but went in a different direction**
 3. **Wrong approach**"
 
-- **Worked well**: Ask one follow-up — "Anything to tweak for next time?" Update process files if yes.
-- **Different direction**: Ask whether to update this process or save the new approach as its own.
-- **Wrong approach**: Offer to save what was actually done as a new process.
+**Worked well** → Ask: "Anything to tweak for next time?" If yes, make the specific change:
+- Missing/unnecessary/reordered step → update `process-library/{process-name}/process.md`
+- New mistake to avoid or new decision → update `process-library/{process-name}/gold-standard.md`
+- Better example from this run → replace the example section in `gold-standard.md` (ask first)
+- Checklist item ambiguous or missing → update `process-library/{process-name}/checklist.md`
 
-Save a run record. Increment run count and update "Last updated" if files changed.
+**Different direction** → Ask: "Update this process, or save the new approach as its own?"
+- Update: modify steps, decisions, mistakes, checklist to cover the broader scope. Update "When to Use."
+- New process: run `/extract-process`. Add cross-references in both processes' "Related Processes."
+
+**Wrong approach** → Ask: "Save what we actually did as a new process?"
+- If yes: run `/extract-process`. Add "NOT for {this type of work}" to the original's "When to Use."
+
+Save a run record. Increment run count. Update "Last updated" if files changed.
 
 ## Output
 
@@ -164,7 +173,7 @@ Present:
 2. The checklist evaluation (with evidence per item)
 3. A one-line summary: "{N}/{total} checks passed. {Must-have status}."
 
-Then ask the feedback question. After: "Process updated. {What changed, or 'No changes needed.'}"
+Then ask the feedback question. After: "Process `/{process-name}` updated: {what changed, or 'No changes needed.'}"
 ```
 
 ## Step 7: Check with the User

@@ -14,7 +14,7 @@ IMPORTANT: If that command fails for any reason, stop and tell me. Do NOT try to
 
 If it worked, set up the project:
 1. Create a .claude/commands/ directory in this project if it doesn't already exist
-2. Copy these three files from /tmp/process-library-kit/.claude/commands/ into this project's .claude/commands/ directory: extract-process.md, run-process.md, list-processes.md
+2. Copy these four files from /tmp/process-library-kit/.claude/commands/ into this project's .claude/commands/ directory: extract-process.md, run-process.md, list-processes.md, update-process-library.md
 3. Copy the entire /tmp/process-library-kit/process-library/ directory into this project
 4. If this project already has a CLAUDE.md file, add the contents of /tmp/process-library-kit/CLAUDE.md to the end. If not, copy it as a new file.
 5. Delete /tmp/process-library-kit

@@ -24,7 +24,7 @@ IMPORTANT: If that command fails for any reason, stop and tell me. Do NOT try to
 
 If it worked, set up the project:
 1. Create a .claude/commands/ directory in this project if it doesn't already exist
-2. Copy these three files from /tmp/process-library-kit/.claude/commands/ into this project's .claude/commands/ directory: extract-process.md, run-process.md, list-processes.md
+2. Copy these four files from /tmp/process-library-kit/.claude/commands/ into this project's .claude/commands/ directory: extract-process.md, run-process.md, list-processes.md, update-process-library.md
 3. Copy the entire /tmp/process-library-kit/process-library/ directory into this project
 4. If this project already has a CLAUDE.md file, add the contents of /tmp/process-library-kit/CLAUDE.md to the end. If not, copy it as a new file.
 5. Delete /tmp/process-library-kit
@@ -70,6 +70,11 @@ This keeps your library healthy. Good processes get refined. Different work beco
 - Examples get replaced when better ones come along
 - Checklists get clearer over time
 
+### 7. The framework updates itself
+Claude checks for updates whenever you run a process command. If a new version is available, you'll see a note at the end: *"A Process Library update is available. Run `/update-process-library` to update."*
+
+Updates only touch the framework — your saved processes are never changed.
+
 ---
 
 ## Setup
@@ -81,7 +86,7 @@ Open Co-Work with your project folder and paste the prompt from [Get Started](#g
 ### Option B: Set it up yourself
 
 1. **Download** this repo (green "Code" button → Download ZIP, or clone it)
-2. **Copy** the `.claude/commands/` and `process-library/` folders into your project
+2. **Copy** the `.claude/commands/` folder (4 files) and `process-library/` folder into your project
 3. **Copy** `CLAUDE.md` into your project (or add its contents to your existing one)
 
 ---

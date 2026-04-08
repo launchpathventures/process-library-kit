@@ -97,7 +97,7 @@ Create the `runs/` directory if it doesn't exist.
 
 ## Step 8: Feedback (CRITICAL — do not skip)
 
-This is the most important step. It's how processes improve. Keep it lightweight — one question to start, follow up only if needed.
+This is the most important step. It's how processes improve. One question to start, then follow the specific workflow for their answer.
 
 ### Ask one question:
 
@@ -108,29 +108,84 @@ This is the most important step. It's how processes improve. Keep it lightweight
 
 Wait for their answer.
 
-### Route based on answer:
+---
 
-**If "Worked well":**
-Ask ONE follow-up: "Anything we should tweak for next time? A step that was missing, a mistake we should watch for, or a better way to do something?"
+### Path A: "Worked well"
 
-- If they mention something, update the relevant process file immediately.
-- If nothing, say "Great — process is working well." and move on.
+Ask ONE follow-up: "Anything we should tweak for next time?"
 
-**If "Mostly worked, but went in a different direction":**
+If the user mentions something, identify which type of improvement it is and follow the specific instructions:
+
+**Missing step** → Open `process-library/{name}/process.md`. Add the new step in the correct position. Renumber subsequent steps. Read it back to confirm placement.
+
+**Unnecessary step** → Open `process-library/{name}/process.md`. Remove the step. Add a note to "Common Pitfalls": "Step '{name}' was removed because {reason} — don't re-add it."
+
+**Steps in wrong order** → Open `process-library/{name}/process.md`. Reorder and renumber. Read back the new order to confirm.
+
+**New mistake to avoid** → Open `process-library/{name}/gold-standard.md`. Add a new entry to the "Mistakes to Avoid" section with: what it looks like, why it's a problem, what to do instead.
+
+**Better example produced** → Ask: "Should this replace the current reference example?" If yes, open `process-library/{name}/gold-standard.md`. Replace the "Best Output Example" section with the relevant excerpt from this run's output. Update the Source and Date fields.
+
+**New decision worth recording** → Open `process-library/{name}/gold-standard.md`. Add a new entry to "Key Decisions" with: what was chosen, alternatives, reasoning, when to reconsider.
+
+**Checklist item was ambiguous** → Open `process-library/{name}/checklist.md`. Rewrite the item to be a clearer yes/no question. Read back the old and new versions to confirm.
+
+**Missing checklist item** → Open `process-library/{name}/checklist.md`. Add the new item to the appropriate tier (Must Pass / Should Pass / Bonus).
+
+If nothing to tweak: "Great — process is working well." Move on.
+
+---
+
+### Path B: "Mostly worked, but went in a different direction"
+
 Ask: "Should we update this process to cover what happened, or save the new approach as its own process?"
 
-- If update: ask what was different, update the process files.
-- If new process: run `/extract-process` for the new approach.
+**If they want to update this process:**
 
-**If "Wrong approach":**
+1. Ask: "What was different from the saved process? Was it the steps, the type of output, or both?"
+2. Based on their answer, apply the relevant changes:
+   - Open `process-library/{name}/process.md` — add, remove, or modify steps to cover the broader scope
+   - Update the "When to Use" section to reflect the expanded scope
+   - Open `process-library/{name}/gold-standard.md` — add new decisions that emerged, add new mistakes discovered
+   - If the output from this run is more representative of the expanded process, ask if it should replace the example
+   - Open `process-library/{name}/checklist.md` — add checks for the new scope
+3. Read back all changes to the user for confirmation before saving
+4. Update the slash command (`.claude/commands/{name}.md`) description if the scope changed significantly
+
+**If they want a new process:**
+
+1. Ask: "What would you call the new approach?" Suggest a name.
+2. Run `/extract-process` — use the current session's work as the basis
+3. After the new process is created, add each process to the other's "Related Processes" section:
+   - In the original: "Related: `/{new-name}` — for when the work goes in {direction}"
+   - In the new one: "Related: `/{original-name}` — for when the work stays closer to {original scope}"
+4. Consider updating the original process's "When to Use" to clarify: "NOT for {what the new process covers}"
+
+---
+
+### Path C: "Wrong approach"
+
 Ask: "Want me to save what we actually did as a new process, so you have the right one next time?"
 
-- If yes: run `/extract-process`.
-- If no: move on.
+**If yes:**
+1. Run `/extract-process` for the work that was actually done
+2. Update the original process's "When to Use" section to add: "NOT for {what this run was actually about}" — so this mismatch doesn't happen again
+3. Note in the run record: "Process was a mismatch for this type of work. Created `/{new-name}` instead."
 
-### Record the run:
+**If no:** Move on. Note in the run record: "Process was a mismatch but user chose not to extract a new one."
 
-Save a run record including any improvements made. Increment the run count in `process.md` and update "Last updated" if any files changed.
+---
+
+### After feedback: Record everything
+
+Update the run record (`process-library/{name}/runs/{date}-{description}.md`) to include:
+```
+Improvements made:
+- {list each change: "Added step 3a: ...", "Added mistake: ...", "Replaced example", etc.}
+- {or "None — process worked as-is"}
+```
+
+Increment the run count in `process.md`. Update "Last updated" date if any files changed.
 
 ## Output
 
@@ -141,4 +196,4 @@ Present to the user:
 
 Then ask the feedback question.
 
-After feedback: "Process updated. {One-line summary of what changed, or 'No changes needed.'}"
+After feedback, confirm: "Process `/{name}` updated: {specific list of what changed, e.g., 'added step 4a, added 1 mistake to avoid, updated example'}." or "No changes — process worked as-is."
