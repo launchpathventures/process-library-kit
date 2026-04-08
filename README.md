@@ -1,119 +1,74 @@
 # Process Library Kit
 
-A drop-in toolkit for **Claude Co-Work** (and Claude Code CLI) that gives Claude the ability to **extract repeatable processes from your work**, **replay them with quality evaluation**, and **build a cumulative library** of how you get things done.
+**Teach Claude to remember how you work — and get better at it every time.**
 
-Every process includes a **gold standard** (curated exemplar + decision log + anti-patterns) and a **binary quality checklist** so Claude evaluates honestly instead of giving itself 4/5 on everything.
+When you finish a piece of work with Claude in Co-Work, this kit lets you save the approach so Claude can follow the same steps next time. Each saved process includes an example of what good output looks like and a checklist to make sure the quality stays high.
 
-> Works with both **Co-Work** (claude.ai) and **Claude Code** (CLI). The setup is identical — Co-Work reads `.claude/commands/` and `CLAUDE.md` the same way Claude Code does.
+Over time, you build a personal library of "how I do things" that Claude knows and improves on.
+
+> Also works with Claude Code (CLI). Same setup, same files.
 
 ## Get Started
 
-Open a Co-Work session with your project folder and paste this:
+You need a **Claude Pro, Team, or Enterprise account** and a **project folder** you share with Co-Work. That's it.
+
+Open Co-Work with your project folder and paste this:
 
 ```
-Set up a Process Library in this project so we can extract and reuse repeatable processes from our work.
+I'd like you to set up a Process Library in this project. This will let us save and reuse the approaches we develop together.
 
-Run this command:
+Please download the setup files by running this command:
 git clone https://github.com/launchpathventures/process-library-kit.git /tmp/process-library-kit
 
-IMPORTANT: If the clone fails, stop and tell me. Do NOT make up the file contents.
+IMPORTANT: If that command fails for any reason, stop and tell me. Do NOT try to create the files from memory.
 
-If the clone succeeds, do the following:
-1. Create the .claude/commands/ directory in this project if it doesn't exist
-2. Copy these three files from /tmp/process-library-kit/.claude/commands/ into this project's .claude/commands/:
-   - extract-process.md
-   - run-process.md
-   - list-processes.md
+If it worked, set up the project:
+1. Create a .claude/commands/ directory in this project if it doesn't already exist
+2. Copy these three files from /tmp/process-library-kit/.claude/commands/ into this project's .claude/commands/ directory: extract-process.md, run-process.md, list-processes.md
 3. Copy the entire /tmp/process-library-kit/process-library/ directory into this project
-4. If this project has a CLAUDE.md, append the contents of /tmp/process-library-kit/CLAUDE.md to the end. If not, copy it as a new file.
-5. Remove /tmp/process-library-kit
+4. If this project already has a CLAUDE.md file, add the contents of /tmp/process-library-kit/CLAUDE.md to the end. If not, copy it as a new file.
+5. Delete /tmp/process-library-kit
 
-After setup, list every file you created and show me the slash commands that are now available.
+When you're done, show me what files you created and what new slash commands are available.
 ```
 
-Hit the copy button in the top-right corner, paste into Co-Work, and Claude sets everything up.
+Hit the copy button, paste into Co-Work, and Claude sets everything up.
 
 ---
-
-## The Problem
-
-You do great work with Claude, but:
-- Next session starts from scratch — no memory of *how* you did it
-- Similar tasks get approached differently each time
-- Quality varies because there's no reference for "what good looks like"
-- You can't build on past approaches
-
-## The Solution
-
-Extract processes from real work, then invoke them directly by name:
-
-```
-/extract-process                          # capture what you just did
-/api-endpoint-scaffold for notifications  # run it again later (auto-generated command)
-/list-processes                           # browse everything
-```
-
-Each extracted process automatically creates its own slash command — no need to remember names or use a generic runner.
 
 ## How It Works
 
-### 1. You do work as normal
-Build a feature, write docs, conduct research, fix a bug — whatever.
+### 1. You work with Claude as normal
+Write a proposal, do research, build a feature, create a presentation — whatever you do.
 
-### 2. Claude suggests extraction
-After completing significant work, Claude asks: *"This looks like a repeatable process. Want to capture it?"*
+### 2. Claude asks if you want to save the approach
+After finishing significant work, Claude asks: *"Want me to save how we did that so we can use the same approach next time?"*
 
-### 3. `/extract-process` captures the pattern
-Claude analyzes the git diff and conversation to extract:
+### 3. You save it with `/extract-process`
+Claude reviews what you did together and captures:
+- **The steps** — what was done, in what order
+- **An example of good output** — the best part of what you just produced, with notes on the key decisions you made and common mistakes to avoid
+- **A quality checklist** — specific yes/no checks to make sure the output is good
+- **A shortcut command** — type `/{name}` to run this process anytime
 
-- **The steps** — what was done, in what order, with what inputs
-- **The gold standard** — three parts:
-  - **Exemplar**: A curated excerpt (the critical 20-30% of your output, not the whole thing)
-  - **Decision log**: The 3-6 key tradeoffs that shaped the output ("we chose X over Y because Z")
-  - **Anti-patterns**: 3-5 concrete things that would make the output BAD
-- **Quality checklist** — binary pass/fail items (not a numeric rubric)
-- **A slash command** — `/{process-name}` for direct invocation
+### 4. Next time, just type `/{name}`
+Claude follows the saved steps, uses the example as a quality reference, and runs the checklist. If anything falls short, it fixes the issue before showing you the result.
 
-### 4. Next time, `/{process-name}`
-Claude loads the process, studies the gold standard, follows the steps, then:
-- Runs every checklist item as PASS/FAIL with evidence citations
-- Checks output against the anti-patterns list
-- Auto-revises if any must-have check fails
-- Saves a run record automatically
+### 5. Claude asks for feedback after every run
+This is the most important part. After delivering the output, Claude asks:
 
-### 5. Structured feedback after every run
-After delivering the output, Claude asks: **"How well did this process fit?"**
+**"How did that work?"**
+- **Worked well** — Claude asks if anything could be better for next time (a missing step, a new mistake to watch for, a better example). Quick — usually one or two small tweaks.
+- **Mostly worked, but the work went in a different direction** — Claude helps you decide: update this process to cover the new direction, or save the new approach as its own process.
+- **Wrong approach** — Claude offers to save what you actually did as a new process instead.
 
-- **Good fit** — Claude walks you through specific improvements: missing steps, better examples, new tradeoffs, new anti-patterns, ambiguous checklist items. Updates process files with anything you identify.
-- **Partial fit** — The work diverged. Claude asks whether to update this process or extract a new one for the different work.
-- **Wrong process** — This was actually a different type of work. Claude offers to extract it as a new process.
+This keeps your library healthy. Good processes get refined. Different work becomes its own process instead of being forced into one that doesn't fit.
 
-This is how the library stays healthy — processes that fit get refined, and genuinely different work becomes its own process instead of being crammed into an existing one.
-
-### 6. The library grows and sharpens
-- Every run either improves an existing process or spawns a new one
-- Anti-patterns accumulate from real failures
-- Gold standards get replaced when better examples emerge
-- Checklist items sharpen when ambiguous ones get rewritten
-
----
-
-## Prerequisites
-
-Before setup, make sure you have:
-
-### For Co-Work (claude.ai)
-
-- **A Claude Pro, Team, or Enterprise account** — Co-Work is available on paid plans
-- **A project folder** — a folder on your computer that you'll share with Co-Work. This is where your code, docs, or other work lives. It can be an existing project or a new empty folder.
-
-That's it. No packages to install, no dependencies, no build steps.
-
-### For Claude Code (CLI)
-
-- **Claude Code installed** — [installation guide](https://docs.anthropic.com/en/docs/claude-code)
-- **A project directory**
-- Same requirements as above, but you're working in the terminal
+### 6. Your library grows and gets sharper
+- Every run either improves an existing process or creates a new one
+- Mistakes get added to the "watch out for" list
+- Examples get replaced when better ones come along
+- Checklists get clearer over time
 
 ---
 
@@ -121,236 +76,148 @@ That's it. No packages to install, no dependencies, no build steps.
 
 ### Option A: Let Claude set it up (recommended)
 
-Open a Co-Work session with your project folder and paste this:
+Open Co-Work with your project folder and paste the prompt from [Get Started](#get-started) above.
 
-```
-Set up a Process Library in this project so we can extract and reuse repeatable processes from our work.
+### Option B: Set it up yourself
 
-Run this command:
-git clone https://github.com/launchpathventures/process-library-kit.git /tmp/process-library-kit
-
-IMPORTANT: If the clone fails, stop and tell me. Do NOT make up the file contents.
-
-If the clone succeeds, do the following:
-1. Create the .claude/commands/ directory in this project if it doesn't exist
-2. Copy these three files from /tmp/process-library-kit/.claude/commands/ into this project's .claude/commands/:
-   - extract-process.md
-   - run-process.md
-   - list-processes.md
-3. Copy the entire /tmp/process-library-kit/process-library/ directory into this project
-4. If this project has a CLAUDE.md, append the contents of /tmp/process-library-kit/CLAUDE.md to the end. If not, copy it as a new file.
-5. Remove /tmp/process-library-kit
-
-After setup, list every file you created and show me the slash commands that are now available.
-```
-
-### Option B: Copy files manually
-
-If you prefer to set things up yourself:
-
-1. **Download or clone** this repo
-2. **Copy** these into your project folder:
-   - `.claude/commands/extract-process.md`
-   - `.claude/commands/run-process.md`
-   - `.claude/commands/list-processes.md`
-   - `process-library/` (the whole directory)
-3. **Add instructions** — append the contents of [`CLAUDE.md`](./CLAUDE.md) to your project's `CLAUDE.md` (or copy it if you don't have one yet)
-
-### After setup
-
-Your process library starts empty. The first time you finish a piece of work in Co-Work, Claude will suggest: *"This looks like a repeatable process. Want to capture it?"*
-
-Or run `/extract-process` yourself anytime.
+1. **Download** this repo (green "Code" button → Download ZIP, or clone it)
+2. **Copy** the `.claude/commands/` and `process-library/` folders into your project
+3. **Copy** `CLAUDE.md` into your project (or add its contents to your existing one)
 
 ---
 
-## What a Process Looks Like
+## What Gets Saved
 
-Each extracted process creates four artifacts. Here are two examples — one for code, one for non-code work:
-
-<details>
-<summary><b>Example: Code — API Endpoint Scaffold</b></summary>
-
-**`process.md`** — The Steps
-```markdown
-# Process: API Endpoint Scaffold
-
-**Created:** 2026-04-08
-**Extracted from:** Building the /api/v1/users endpoint
-**Slash command:** `/api-endpoint-scaffold`
-
-## When to Use
-When creating a new REST API endpoint. NOT for modifying existing endpoints.
-
-## Steps
-### 1. Define the Route Schema
-### 2. Write the Handler with Validation-First Pattern
-### 3. Add Error Response Formatting
-### 4. Write Tests (Happy Path + Edge Cases)
-### 5. Update API Docs
-```
-
-**`gold-standard.md`** — The Reference
-```markdown
-## Exemplar
-{The critical 20-30% of the actual output — just the handler function, not every file}
-
-## Decision Log
-### Decision 1: Zod over manual validation
-- **Alternatives:** Manual if/else checks, joi, yup
-- **Why Zod:** Co-locates schema with TypeScript types, better error formatting
-- **Would change if:** Project already uses joi everywhere
-
-## Anti-Patterns
-### 1. Business logic before validation
-- **What it looks like:** Database queries before input is validated
-- **Why it's bad:** Invalid input can corrupt state
-- **Instead:** Always validate at the top of the handler
-```
-
-**`checklist.md`** — The Quality Gate
-```markdown
-## Must-Have
-- [ ] Input validation happens before any business logic or side effects
-- [ ] Every error response includes a machine-readable error code
-- [ ] At least one test covers the happy path end-to-end
-
-## Should-Have
-- [ ] Error messages are specific enough to diagnose without checking logs
-- [ ] Response types are explicitly typed (no `any`)
-```
-
-</details>
+When you extract a process, Claude creates a folder with three files plus a shortcut command. Here's what they look like for two different types of work:
 
 <details>
-<summary><b>Example: Non-code — Competitive Research</b></summary>
+<summary><b>Example: Competitive Research</b></summary>
 
-**`process.md`** — The Steps
+**The Steps** (`process.md`)
 ```markdown
 # Process: Competitive Research
 
-**Created:** 2026-04-08
-**Extracted from:** CRM landscape analysis for SMB market entry
-**Slash command:** `/competitive-research`
+Slash command: /competitive-research
 
 ## When to Use
 When evaluating a market or product category before making a build/buy/partner decision.
-NOT for quick feature comparisons — this is a structured deep dive.
+Not for quick feature comparisons — this is a structured deep dive.
 
 ## Steps
-### 1. Define the Research Question and Scope
-### 2. Identify the Top 5-8 Players
-### 3. Analyze Each on the Same Dimensions
-### 4. Build the Comparison Matrix
-### 5. Write the Recommendation with Tradeoffs
+1. Define the research question and scope
+2. Identify the top 5-8 players
+3. Analyze each on the same dimensions
+4. Build the comparison matrix
+5. Write the recommendation with tradeoffs
 ```
 
-**`gold-standard.md`** — The Reference
+**The Example & Lessons** (`gold-standard.md`)
 ```markdown
-## Exemplar
-{The comparison matrix and recommendation section from the CRM analysis — not the full 20-page report}
+## Best Output Example
+{The comparison matrix and recommendation section — not the full report}
 
-## Decision Log
-### Decision 1: Structured matrix over narrative comparison
-- **Alternatives:** Write a pros/cons narrative for each competitor
-- **Why matrix:** Forces apples-to-apples comparison, easier to spot gaps
-- **Would change if:** Fewer than 3 competitors — narrative is fine for 2
+## Key Decisions We Made
+### Structured matrix over narrative comparison
+- Could have done: Written a pros/cons narrative for each competitor
+- Why we chose this: Forces apples-to-apples comparison, easier to spot gaps
+- Would reconsider if: Fewer than 3 competitors — narrative is fine for 2
 
-### Decision 2: Include a "wild card" outside the obvious category
-- **Alternatives:** Only analyze direct competitors
-- **Why:** The CRM analysis missed Notion until we added it — adjacent tools often reveal positioning gaps
-- **Would change if:** Time-constrained to under 2 hours
+### Included a "wild card" outside the obvious category
+- Could have done: Only analyzed direct competitors
+- Why we chose this: The CRM analysis missed Notion until we added it
+- Would reconsider if: Time-constrained to under 2 hours
 
-## Anti-Patterns
-### 1. Listing features without scoring them
-- **What it looks like:** "Tool A has reporting. Tool B has reporting."
-- **Why it's bad:** No basis for comparison — every tool "has" most features
-- **Instead:** Score each feature on a scale or rate as weak/adequate/strong
+## Mistakes to Avoid
+### Listing features without scoring them
+- Looks like: "Tool A has reporting. Tool B has reporting."
+- Problem: No basis for comparison — every tool "has" most features
+- Instead: Rate each as weak / adequate / strong
 
-### 2. Researching only what the vendor says
-- **What it looks like:** Feature lists copied from marketing pages
-- **Why it's bad:** Marketing overstates. Real capabilities differ.
-- **Instead:** Check reviews, community forums, and trial the product if possible
+### Researching only what the vendor says
+- Looks like: Feature lists copied from marketing pages
+- Problem: Marketing overstates. Real capabilities differ.
+- Instead: Check reviews, community forums, trial the product
 ```
 
-**`checklist.md`** — The Quality Gate
+**The Quality Checklist** (`checklist.md`)
 ```markdown
-## Must-Have
-- [ ] Research question is explicitly stated at the top
+## Must Pass
+- [ ] Research question is stated at the top
 - [ ] At least 5 competitors are analyzed
 - [ ] All competitors are evaluated on the same dimensions
 - [ ] Recommendation includes at least one tradeoff or risk
 
-## Should-Have
-- [ ] At least one "wild card" from outside the obvious category is included
-- [ ] Sources beyond vendor marketing are cited (reviews, forums, trials)
+## Should Pass
+- [ ] At least one "wild card" from outside the obvious category
+- [ ] Sources beyond vendor marketing are cited
 
-## Nice-to-Have
-- [ ] Comparison matrix is included as a table
+## Bonus
+- [ ] Comparison matrix included as a table
 - [ ] Each competitor has a one-line "best for" summary
 ```
 
 </details>
 
-### `.claude/commands/{name}.md` — The Slash Command
+<details>
+<summary><b>Example: API Endpoint (for developers)</b></summary>
 
-Auto-generated so you type `/{name}` directly instead of `/run-process {name}`.
+**The Steps** (`process.md`)
+```markdown
+# Process: API Endpoint Scaffold
 
----
+Slash command: /api-endpoint-scaffold
 
-## Why This Design
+## When to Use
+When creating a new REST API endpoint. Not for modifying existing endpoints.
 
-### Gold standard: curated excerpt + decisions + anti-patterns (not annotated dump)
+## Steps
+1. Define the route schema
+2. Write the handler with validation-first pattern
+3. Add error response formatting
+4. Write tests (happy path + edge cases)
+5. Update API docs
+```
 
-**Problem with v1:** "Dump the whole output and annotate why it's good" doesn't work. Real outputs are hundreds of lines — Claude skims them. Annotations like `<!-- GOOD: clean separation -->` are vague and self-congratulatory.
+**The Example & Lessons** (`gold-standard.md`)
+```markdown
+## Best Output Example
+{The handler function — not every file touched}
 
-**What actually helps:** The *decisions* that shaped the output, not the output itself. "We chose Zod over manual validation because..." is actionable. "This is good code" is not. The anti-patterns give specific guardrails. The exemplar is small enough to actually study.
+## Key Decisions We Made
+### Zod over manual validation
+- Could have done: Manual if/else checks, joi, yup
+- Why we chose this: Co-locates schema with TypeScript types, better errors
+- Would reconsider if: Project already uses joi everywhere
 
-### Checklist: binary pass/fail (not 1-5 rubric)
+## Mistakes to Avoid
+### Business logic before validation
+- Looks like: Database queries before input is validated
+- Problem: Invalid input can corrupt state
+- Instead: Always validate at the top of the handler
+```
 
-**Problem with v1:** Numeric self-scoring is grading your own homework. Claude will rationalize a 4 on everything because 3 feels harsh and 5 feels overconfident. The scores become meaningless.
+**The Quality Checklist** (`checklist.md`)
+```markdown
+## Must Pass
+- [ ] Input validation happens before any business logic
+- [ ] Every error response includes a machine-readable error code
+- [ ] At least one test covers the happy path end-to-end
 
-**What actually works:** Binary forces honesty. "Does every endpoint validate input before processing?" — either it does or it doesn't. The evidence citation requirement ("quote the specific line") makes it impossible to hand-wave.
+## Should Pass
+- [ ] Error messages are specific enough to diagnose without logs
+- [ ] Response types are explicitly typed (no `any`)
+```
 
-### Slash commands: auto-generated per process (not `/run-process {name}`)
-
-**Problem with v1:** Users have to remember process names and type `/run-process api-endpoint-scaffold`. Friction kills adoption.
-
-**What actually works:** Each process generates its own `.claude/commands/{name}.md`. Type `/{name}` directly. The process library becomes a growing set of slash commands that show up in Co-Work's and Claude Code's command palette.
+</details>
 
 ---
 
 ## Tips
 
-- **Start small**: Extract your first process from work you just did. Don't pre-build a library.
-- **Real exemplars only**: Use actual output, not hypotheticals. Curate it down to the critical 20-30%.
-- **Decision log is king**: This is the most valuable part of the gold standard. 3 good decisions beat 30 lines of annotated code.
-- **Update anti-patterns from failures**: When a process run produces bad output, add the failure mode to the anti-patterns list.
-- **Checklist items must be verifiable by a stranger**: If a checklist item requires subjective judgment, rewrite it until it's binary.
-- **Not everything is a process**: One-off fixes, trivial tasks, and exploratory work don't need capturing.
-
-## File Structure
-
-```
-your-project/
-├── CLAUDE.md                              <- add the process library section
-├── .claude/commands/
-│   ├── extract-process.md                 <- /extract-process (core kit)
-│   ├── run-process.md                     <- /run-process (generic runner)
-│   ├── list-processes.md                  <- /list-processes
-│   ├── api-endpoint-scaffold.md           <- auto-generated per process
-│   └── competitive-research.md            <- auto-generated per process
-└── process-library/
-    ├── README.md                          <- library index
-    ├── _template.md                       <- process definition template
-    ├── _gold-standard-template.md         <- gold standard template
-    ├── _checklist-template.md             <- quality checklist template
-    └── {process-name}/
-        ├── process.md
-        ├── gold-standard.md
-        ├── checklist.md
-        └── runs/                          <- optional score history
-```
+- **Start with your next piece of work.** Don't try to pre-build a library — extract from real work you just did.
+- **Not everything needs saving.** Quick fixes, one-off tasks, and exploratory work don't need a process. Only save approaches you'll use again.
+- **The feedback after each run is the most valuable part.** That's where processes actually improve. Don't skip it.
+- **It's OK to start rough.** Your first extracted process won't be perfect. It gets better every time you use it and give feedback.
 
 ## License
 

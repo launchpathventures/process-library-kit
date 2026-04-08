@@ -22,13 +22,13 @@ process-library/{process-name}/
 
 Each process also generates a slash command at `.claude/commands/{process-name}.md` for direct invocation.
 
-## Gold Standard Design
+## Reference Example Design
 
-A gold standard has three sections — each serves a different purpose:
+Each process has a reference example with three sections:
 
-1. **Exemplar** — A curated excerpt (the critical 20-30%, not the whole output). Real artifact, not hypothetical.
-2. **Decision Log** — The key decisions and tradeoffs that shaped the output. Only genuine decisions where alternatives were considered — do not pad with obvious choices.
-3. **Anti-Patterns** — Concrete things that would make the output BAD. Only realistic risks — do not pad with generic warnings.
+1. **Best Output Example** — The critical 20-30% of the output, not the whole thing. A real artifact, not hypothetical.
+2. **Key Decisions** — The decisions and tradeoffs that shaped the output. Only genuine decisions where alternatives were considered — do not pad with obvious choices.
+3. **Mistakes to Avoid** — Concrete things that would make the output BAD. Only realistic risks — do not pad with generic warnings.
 
 ## Quality Checklist Design
 
@@ -37,17 +37,17 @@ Quality is evaluated via a binary pass/fail checklist (not a numeric rubric). Ea
 - Requires a one-line evidence citation (quote the output). No evidence = FAIL.
 - Falls into must-have (all must pass), should-have (2/3 must pass), or nice-to-have (bonus)
 
-Why checklist over rubric: numeric self-scoring is unreliable — Claude will rationalize a 4 on everything. Binary forces honesty: either the claim HAS a source cited, or it doesn't.
+Why checklist over scores: numeric self-scoring is unreliable. Binary forces honesty: either the claim HAS a source cited, or it doesn't.
 
 ## Process Feedback Loop (critical)
 
 Processes improve through structured feedback after every run. This is the most important part of the system. After every run, Claude must:
 
 1. Save a run record automatically (checklist results, anti-pattern scan, key decisions)
-2. Ask the user: **"How well did this process fit what you needed?"** with three options:
-   - **Good fit** — proceed to capture specific improvements (missing steps, better examples, new anti-patterns, ambiguous checklist items)
-   - **Partial fit** — determine whether to update this process or extract a new one for the divergent work
-   - **Wrong process** — offer to extract what was actually done as a new process
+2. Ask the user: **"How did that work?"** with three options:
+   - **Worked well** — ask one follow-up: "Anything to tweak for next time?" Update if yes.
+   - **Mostly worked, but went in a different direction** — ask whether to update this process or save the new approach as its own
+   - **Wrong approach** — offer to save what was actually done as a new process
 3. Update process files immediately with any improvements identified
 4. Record what changed in the run log
 
@@ -55,7 +55,7 @@ This three-way routing is essential. Without it, processes either never improve 
 
 ## After Completing Work
 
-When you finish a significant piece of work (building a feature, writing docs, conducting research, creating a proposal, fixing a complex bug), ask: "This looks like a repeatable type of work. Would you like to run `/extract-process` to capture it in the process library?"
+When you finish a significant piece of work (building a feature, writing a document, conducting research, creating a proposal, fixing a complex problem), ask: "Want me to save how we did that so we can use the same approach next time?"
 
 Only prompt when the work:
 1. Will likely happen again (not a one-off fix)

@@ -1,35 +1,34 @@
 # Quality Checklist: {Process Name}
 
-**Passing criteria:** All must-haves pass + at least 2/3 should-haves pass.
+**Passing rule:** All "Must Pass" items pass + at least 2/3 of "Should Pass" items pass.
 
-Every item is binary: PASS or FAIL. No partial credit. Each judgment requires a one-line evidence citation — quote the specific part of the output that proves it. No evidence = FAIL.
+Every item is yes or no. No partial credit. Each answer needs a one-line proof — quote the specific part of the output. No proof = fail.
 
-## Must-Have
+## Must Pass
 
-These must ALL pass. If any fails, the output needs revision before use.
+These must ALL pass. If any fails, fix the output before presenting it.
 
-- [ ] {Concrete, verifiable yes/no question}
-- [ ] {Concrete, verifiable yes/no question}
-- [ ] {Concrete, verifiable yes/no question}
-- [ ] {Concrete, verifiable yes/no question}
+- [ ] {Concrete yes/no question — a stranger could check this}
+- [ ] {Concrete yes/no question}
+- [ ] {Concrete yes/no question}
 
-{4-5 items. Each should be unambiguous — a stranger could check it.}
+{3-5 items. Each must be unambiguous.}
 
-## Should-Have
+## Should Pass
 
-Most of these should pass. Failure means below-standard but still usable.
+Most of these should pass. Failing means below standard but still usable.
 
-- [ ] {Concrete, verifiable yes/no question}
-- [ ] {Concrete, verifiable yes/no question}
-- [ ] {Concrete, verifiable yes/no question}
+- [ ] {Concrete yes/no question}
+- [ ] {Concrete yes/no question}
+- [ ] {Concrete yes/no question}
 
-{3-4 items.}
+{2-4 items.}
 
-## Nice-to-Have
+## Bonus
 
-Bonus quality. These distinguish good from great.
+These separate good from great.
 
-- [ ] {Concrete, verifiable yes/no question}
-- [ ] {Concrete, verifiable yes/no question}
+- [ ] {Concrete yes/no question}
+- [ ] {Concrete yes/no question}
 
-{2-3 items.}
+{1-3 items.}

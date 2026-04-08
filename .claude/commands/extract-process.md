@@ -15,9 +15,9 @@ Before anything, collect evidence of what just happened. Use whichever sources a
 Ask the user:
 - What type of work was this? (e.g., "writing a blog post", "competitive research", "building an API endpoint", "creating a proposal")
 - Would you do this type of work again?
-- What would you name it?
+- What would you call it? Suggest a short name like `blog-post`, `competitive-research`, `api-endpoint`, `client-proposal`.
 
-Propose a kebab-case name: `blog-post-draft`, `competitive-research`, `api-endpoint-scaffold`, `client-proposal`.
+The name becomes a slash command (`/blog-post`, `/competitive-research`), so keep it short and memorable. Use hyphens between words.
 
 ## Step 2: Extract the Steps
 
@@ -37,11 +37,11 @@ For each step document:
 - **Output**: What this step produces
 - **Judgment calls**: Where human decisions are needed (or "none")
 
-## Step 3: Build the Gold Standard
+## Step 3: Build the Reference Example
 
-The gold standard is NOT the entire output dumped into a file. It is a curated reference that makes future runs better. Build it in three sections:
+The reference is NOT the entire output dumped into a file. It is a curated reference that makes future runs better. Build it in three sections:
 
-### Section A: The Exemplar (curated excerpt)
+### Section A: Best Output Example
 
 Pick the **most representative 20-30% of the output** — the part that best demonstrates the pattern. This is the critical excerpt, not the whole thing.
 
@@ -51,9 +51,9 @@ Pick the **most representative 20-30% of the output** — the part that best dem
 
 Include the excerpt in full, exactly as produced (real artifact, not hypothetical).
 
-### Section B: Decision Log
+### Section B: Key Decisions
 
-Document the **key decisions and tradeoffs** that shaped the output. This is what actually makes a gold standard useful — not "this is good" annotations, but "we chose X over Y because Z."
+Document the **key decisions and tradeoffs** that shaped the output. This is the most valuable part — not "this is good" annotations, but "we chose X over Y because Z."
 
 For each decision:
 - **Decision**: What was chosen
@@ -63,16 +63,16 @@ For each decision:
 
 **Include only genuine decisions where alternatives were considered.** Simple work might have 1-2 decisions. Complex work might have 5-6. Do NOT pad with obvious choices just to hit a number — filler degrades the gold standard.
 
-### Section C: Anti-Patterns
+### Section C: Mistakes to Avoid
 
 List concrete things that would make this output BAD. These are more useful than vague praise because they give Claude specific things to avoid.
 
 Format:
-- **Anti-pattern**: {what bad looks like}
-- **Why it's bad**: {the consequence}
+- **Mistake**: {what bad looks like}
+- **Why it's a problem**: {the consequence}
 - **What to do instead**: {the fix}
 
-**Include only anti-patterns you've actually seen or that are realistic risks for this type of work.** If there's only 1-2 genuine anti-patterns, that's fine. Do NOT pad with generic warnings like "don't be vague" — they add noise.
+**Only include mistakes that are realistic risks for this type of work.** If there's only 1-2, that's fine. Do NOT pad with generic warnings like "don't be vague" — they add noise.
 
 ## Step 4: Build the Quality Checklist
 
@@ -144,40 +144,38 @@ After completing all steps, run through every item in `checklist.md`:
 
 ## Feedback (do not skip)
 
-After presenting output and evaluation, ask the user:
+After presenting output and evaluation, ask:
 
-"**How well did this process fit what you needed?**
-1. **Good fit** — steps matched, minor tweaks at most
-2. **Partial fit** — some steps relevant but work diverged significantly
-3. **Wrong process** — this was actually a different type of work"
+"**How did that work?**
+1. **Worked well** — maybe small tweaks
+2. **Mostly worked, but went in a different direction**
+3. **Wrong approach**"
 
-**Good fit**: Ask about specific improvements — missing/unnecessary steps, better example, new tradeoffs, new anti-patterns, ambiguous checklist items. Update process files with anything identified.
+- **Worked well**: Ask one follow-up — "Anything to tweak for next time?" Update process files if yes.
+- **Different direction**: Ask whether to update this process or save the new approach as its own.
+- **Wrong approach**: Offer to save what was actually done as a new process.
 
-**Partial fit**: Ask whether to update this process or extract a new one for the divergent work.
-
-**Wrong process**: Offer to extract what was actually done as a new process via `/extract-process`.
-
-Save a run record to `process-library/{process-name}/runs/` and update the run count.
+Save a run record. Increment run count and update "Last updated" if files changed.
 
 ## Output
 
 Present:
 1. Your complete output
 2. The checklist evaluation (with evidence per item)
-3. A one-line summary: "{N}/{total} checks passed. {Must-have status}. {Any notable decisions made.}"
+3. A one-line summary: "{N}/{total} checks passed. {Must-have status}."
 
-Then run the feedback conversation. After feedback: "Process updated with your feedback. {Summary of changes, or 'No changes needed.'}."
+Then ask the feedback question. After: "Process updated. {What changed, or 'No changes needed.'}"
 ```
 
-## Step 7: Validate the Process Itself
+## Step 7: Check with the User
 
-Before saving, present the extracted process to the user for review. Show them:
+Before saving, show the user what you've put together and ask them to confirm:
 
-1. **The steps** — "Here are the {N} steps I extracted. Do these match what we actually did? Anything missing or unnecessary?"
-2. **The gold standard exemplar** — "I picked this section as the representative example. Is this the right part to highlight?"
-3. **The checklist** — "Here are the quality checks. Can each of these be answered with a clear yes or no?"
+1. **The steps** — "Here's what I captured. Do these steps match what we actually did? Anything missing or that doesn't belong?"
+2. **The example** — "I picked this part as the reference for next time. Is this the right section to highlight?"
+3. **The checklist** — "These are the quality checks I'll use to verify the output next time. Do they make sense?"
 
-**Do NOT skip this step.** A bad process that gets saved and reused is worse than no process. The user must confirm before files are written.
+**Do NOT skip this.** A bad process that gets saved and reused is worse than no process. The user must confirm before files are written.
 
 ## Step 8: Save and Confirm
 

@@ -1,37 +1,35 @@
-# Gold Standard: {Process Name}
+# Reference: {Process Name}
 
 **Source:** {what real work this was extracted from}
 **Date:** {when the original work was done}
-**Last reviewed:** {date — update this when the gold standard is confirmed as still current}
+**Last reviewed:** {date — update when confirmed as still current}
 
-## Exemplar
+## Best Output Example
 
-The critical excerpt from the original output — the 20-30% that best demonstrates the pattern. This is a real artifact, not a hypothetical.
+The critical excerpt from the original output — the 20-30% that best demonstrates the pattern. A real artifact, not a hypothetical.
 
-{Include the curated excerpt here — the most representative portion of the actual output. Not the whole thing, just the part that shows the standard.}
+{Include the curated excerpt here — the most representative portion. Not the whole thing, just the part that shows the standard.}
 
-## Decision Log
+## Key Decisions
 
-Key decisions and tradeoffs that shaped the output. These are what make the gold standard useful — they capture the judgment, not just the result.
-
-Only include genuine decisions where alternatives were considered. Simple work may have 1-2. Complex work may have 5-6. Do not pad.
+Decisions and tradeoffs that shaped the output. Only genuine decisions where alternatives were considered. Do not pad.
 
 ### Decision 1: {What was chosen}
 
-- **Alternatives considered:** {what else could have been done}
-- **Why this choice:** {the reasoning}
-- **What would change it:** {conditions under which you'd choose differently}
+- **Could have done:** {what else was considered}
+- **Why we chose this:** {the reasoning}
+- **Would reconsider if:** {conditions that would change the choice}
 
 {Add more decisions only if they represent real tradeoffs}
 
-## Anti-Patterns
+## Mistakes to Avoid
 
-Concrete things that would make this output BAD. Only include anti-patterns that are realistic risks for this type of work — not generic warnings.
+Concrete things that would make this output BAD. Only include realistic risks for this type of work — not generic warnings.
 
-### 1. {Anti-pattern name}
+### 1. {Mistake name}
 
-- **What it looks like:** {concrete example of the bad output}
-- **Why it's bad:** {the consequence}
-- **What to do instead:** {the fix}
+- **Looks like:** {concrete example of the bad output}
+- **Problem:** {the consequence}
+- **Instead:** {what to do}
 
-{Add more anti-patterns as they are discovered through runs}
+{Add more as they are discovered through runs}
