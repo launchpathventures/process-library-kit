@@ -4,7 +4,7 @@
 **Last updated:** {YYYY-MM-DD}
 **Extracted from:** {description of the original work this came from}
 **Slash command:** `/{process-name}`
-**Times run:** 0
+**Runs:** 0
 
 ## When to Use
 
@@ -35,7 +35,7 @@
 
 ## Common Pitfalls
 
-{Things that go wrong, learned from experience}
+{Things that go wrong, learned from experience. Add to this list after runs that reveal issues.}
 
 - {pitfall 1}: {how to avoid}
 - {pitfall 2}: {how to avoid}

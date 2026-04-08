@@ -79,13 +79,15 @@ Claude loads the process, studies the gold standard, follows the steps, then:
 - Runs every checklist item as PASS/FAIL with evidence citations
 - Checks output against the anti-patterns list
 - Auto-revises if any must-have check fails
-- Saves a run record for quality tracking
+- Saves a run record automatically
+- **Asks you**: "Did this run reveal a missing step, a new anti-pattern, or a better example?"
 
-### 5. The library grows and improves
-- Gold standards get replaced when better examples emerge
-- Steps refine as runs reveal gaps
+### 5. Processes improve through use
+After every run, Claude prompts you to capture what you learned. Over time:
 - Anti-patterns accumulate from real failures
-- Checklist items sharpen from real usage
+- Steps get added or removed based on what actually happens
+- Gold standards get replaced when better examples emerge
+- Checklist items sharpen when ambiguous ones get rewritten
 
 ---
 
@@ -157,10 +159,12 @@ Or run `/extract-process` yourself anytime.
 
 ## What a Process Looks Like
 
-Each extracted process creates four artifacts:
+Each extracted process creates four artifacts. Here are two examples — one for code, one for non-code work:
 
-### `process-library/{name}/process.md` — The Steps
+<details>
+<summary><b>Example: Code — API Endpoint Scaffold</b></summary>
 
+**`process.md`** — The Steps
 ```markdown
 # Process: API Endpoint Scaffold
 
@@ -179,13 +183,8 @@ When creating a new REST API endpoint. NOT for modifying existing endpoints.
 ### 5. Update API Docs
 ```
 
-### `process-library/{name}/gold-standard.md` — The Reference
-
-Three sections that actually help future runs:
-
+**`gold-standard.md`** — The Reference
 ```markdown
-# Gold Standard: API Endpoint Scaffold
-
 ## Exemplar
 {The critical 20-30% of the actual output — just the handler function, not every file}
 
@@ -193,42 +192,98 @@ Three sections that actually help future runs:
 ### Decision 1: Zod over manual validation
 - **Alternatives:** Manual if/else checks, joi, yup
 - **Why Zod:** Co-locates schema with TypeScript types, better error formatting
-- **Would change if:** Project already uses joi everywhere — consistency over ideal
-
-### Decision 2: Validate before any side effects
-- **Alternatives:** Validate inline as fields are used
-- **Why up-front:** Prevents partial state corruption if later fields fail
-- **Would change if:** Never — this is a hard rule
+- **Would change if:** Project already uses joi everywhere
 
 ## Anti-Patterns
 ### 1. Business logic before validation
-- **What it looks like:** Database queries or mutations before input is validated
-- **Why it's bad:** Invalid input can corrupt state before validation catches it
+- **What it looks like:** Database queries before input is validated
+- **Why it's bad:** Invalid input can corrupt state
 - **Instead:** Always validate at the top of the handler
 ```
 
-### `process-library/{name}/checklist.md` — The Quality Gate
-
-Binary pass/fail with evidence required:
-
+**`checklist.md`** — The Quality Gate
 ```markdown
-# Quality Checklist: API Endpoint Scaffold
-
 ## Must-Have
 - [ ] Input validation happens before any business logic or side effects
 - [ ] Every error response includes a machine-readable error code
 - [ ] At least one test covers the happy path end-to-end
-- [ ] Route is registered and reachable (verified by running the test)
 
 ## Should-Have
 - [ ] Error messages are specific enough to diagnose without checking logs
-- [ ] Test covers at least one invalid-input scenario
 - [ ] Response types are explicitly typed (no `any`)
+```
+
+</details>
+
+<details>
+<summary><b>Example: Non-code — Competitive Research</b></summary>
+
+**`process.md`** — The Steps
+```markdown
+# Process: Competitive Research
+
+**Created:** 2026-04-08
+**Extracted from:** CRM landscape analysis for SMB market entry
+**Slash command:** `/competitive-research`
+
+## When to Use
+When evaluating a market or product category before making a build/buy/partner decision.
+NOT for quick feature comparisons — this is a structured deep dive.
+
+## Steps
+### 1. Define the Research Question and Scope
+### 2. Identify the Top 5-8 Players
+### 3. Analyze Each on the Same Dimensions
+### 4. Build the Comparison Matrix
+### 5. Write the Recommendation with Tradeoffs
+```
+
+**`gold-standard.md`** — The Reference
+```markdown
+## Exemplar
+{The comparison matrix and recommendation section from the CRM analysis — not the full 20-page report}
+
+## Decision Log
+### Decision 1: Structured matrix over narrative comparison
+- **Alternatives:** Write a pros/cons narrative for each competitor
+- **Why matrix:** Forces apples-to-apples comparison, easier to spot gaps
+- **Would change if:** Fewer than 3 competitors — narrative is fine for 2
+
+### Decision 2: Include a "wild card" outside the obvious category
+- **Alternatives:** Only analyze direct competitors
+- **Why:** The CRM analysis missed Notion until we added it — adjacent tools often reveal positioning gaps
+- **Would change if:** Time-constrained to under 2 hours
+
+## Anti-Patterns
+### 1. Listing features without scoring them
+- **What it looks like:** "Tool A has reporting. Tool B has reporting."
+- **Why it's bad:** No basis for comparison — every tool "has" most features
+- **Instead:** Score each feature on a scale or rate as weak/adequate/strong
+
+### 2. Researching only what the vendor says
+- **What it looks like:** Feature lists copied from marketing pages
+- **Why it's bad:** Marketing overstates. Real capabilities differ.
+- **Instead:** Check reviews, community forums, and trial the product if possible
+```
+
+**`checklist.md`** — The Quality Gate
+```markdown
+## Must-Have
+- [ ] Research question is explicitly stated at the top
+- [ ] At least 5 competitors are analyzed
+- [ ] All competitors are evaluated on the same dimensions
+- [ ] Recommendation includes at least one tradeoff or risk
+
+## Should-Have
+- [ ] At least one "wild card" from outside the obvious category is included
+- [ ] Sources beyond vendor marketing are cited (reviews, forums, trials)
 
 ## Nice-to-Have
-- [ ] Tests cover at least one edge case per validation rule
-- [ ] OpenAPI/Swagger doc is updated
+- [ ] Comparison matrix is included as a table
+- [ ] Each competitor has a one-line "best for" summary
 ```
+
+</details>
 
 ### `.claude/commands/{name}.md` — The Slash Command
 

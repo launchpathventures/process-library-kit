@@ -17,6 +17,7 @@ process-library/{process-name}/
   process.md              — Definition: when to use, inputs, steps, outputs
   gold-standard.md        — Exemplar excerpt + decision log + anti-patterns
   checklist.md            — Binary quality checklist (pass/fail, no partial credit)
+  runs/                   — Automatic run records with scores
 ```
 
 Each process also generates a slash command at `.claude/commands/{process-name}.md` for direct invocation.
@@ -26,21 +27,30 @@ Each process also generates a slash command at `.claude/commands/{process-name}.
 A gold standard has three sections — each serves a different purpose:
 
 1. **Exemplar** — A curated excerpt (the critical 20-30%, not the whole output). Real artifact, not hypothetical.
-2. **Decision Log** — The 3-6 key decisions and tradeoffs that shaped the output. This is what actually prevents future runs from making worse choices.
-3. **Anti-Patterns** — 3-5 concrete things that would make the output BAD. More useful than praise.
+2. **Decision Log** — The key decisions and tradeoffs that shaped the output. Only genuine decisions where alternatives were considered — do not pad with obvious choices.
+3. **Anti-Patterns** — Concrete things that would make the output BAD. Only realistic risks — do not pad with generic warnings.
 
 ## Quality Checklist Design
 
 Quality is evaluated via a binary pass/fail checklist (not a numeric rubric). Each item:
-- Is a concrete, verifiable yes/no question
+- Is a concrete, verifiable yes/no question (a stranger could check it)
 - Requires a one-line evidence citation (quote the output). No evidence = FAIL.
 - Falls into must-have (all must pass), should-have (2/3 must pass), or nice-to-have (bonus)
 
-Why checklist over rubric: numeric self-scoring is unreliable — Claude will rationalize a 4 on everything. Binary forces honesty: either input IS validated before processing, or it isn't.
+Why checklist over rubric: numeric self-scoring is unreliable — Claude will rationalize a 4 on everything. Binary forces honesty: either the claim HAS a source cited, or it doesn't.
+
+## Process Improvement Loop
+
+Processes improve through use, not through planning. After every run:
+1. Claude saves a run record automatically (checklist results, anti-pattern scan, key decisions)
+2. Claude asks: "Did this run reveal a missing step, a new anti-pattern, or a better example?"
+3. If the user identifies an improvement, Claude updates the process files immediately
+
+This means processes get better every time they're used.
 
 ## After Completing Work
 
-When you finish a significant piece of work (building a feature, writing docs, conducting research, fixing a complex bug), ask: "This looks like a repeatable type of work. Would you like to run `/extract-process` to capture it in the process library?"
+When you finish a significant piece of work (building a feature, writing docs, conducting research, creating a proposal, fixing a complex bug), ask: "This looks like a repeatable type of work. Would you like to run `/extract-process` to capture it in the process library?"
 
 Only prompt when the work:
 1. Will likely happen again (not a one-off fix)
@@ -48,3 +58,10 @@ Only prompt when the work:
 3. Would benefit future sessions if captured
 
 Do not prompt for trivial fixes or one-off tasks.
+
+## Process Extraction Quality
+
+When extracting a process, always present the draft to the user for review BEFORE saving files. A bad process that gets saved and reused is worse than no process. The user must confirm:
+- The steps match what actually happened
+- The gold standard exemplar is the right section to highlight
+- The checklist items can each be answered with a clear yes or no

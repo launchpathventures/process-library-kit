@@ -13,15 +13,15 @@ Before anything, collect evidence of what just happened. Use whichever sources a
 ## Step 1: Identify the Process
 
 Ask the user:
-- What type of work was this? (e.g., "writing an API endpoint", "competitive research", "bug triage")
+- What type of work was this? (e.g., "writing a blog post", "competitive research", "building an API endpoint", "creating a proposal")
 - Would you do this type of work again?
 - What would you name it?
 
-Propose a kebab-case name: `api-endpoint-scaffold`, `competitive-research`, `bug-triage-and-fix`.
+Propose a kebab-case name: `blog-post-draft`, `competitive-research`, `api-endpoint-scaffold`, `client-proposal`.
 
 ## Step 2: Extract the Steps
 
-From the git diff and conversation, reconstruct what happened:
+From the evidence gathered, reconstruct what happened:
 
 1. What was researched/read first? (inputs)
 2. What decisions were made? (judgment points)
@@ -61,43 +61,43 @@ For each decision:
 - **Why this choice**: The reasoning
 - **What would change it**: Under what conditions you'd choose differently
 
-3-6 decisions is typical. These are what prevent future runs from making worse choices.
+**Include only genuine decisions where alternatives were considered.** Simple work might have 1-2 decisions. Complex work might have 5-6. Do NOT pad with obvious choices just to hit a number — filler degrades the gold standard.
 
 ### Section C: Anti-Patterns
 
-List 3-5 concrete things that would make this output BAD. These are more useful than vague praise because they give Claude specific things to avoid.
+List concrete things that would make this output BAD. These are more useful than vague praise because they give Claude specific things to avoid.
 
 Format:
 - **Anti-pattern**: {what bad looks like}
 - **Why it's bad**: {the consequence}
 - **What to do instead**: {the fix}
 
-Example: "Anti-pattern: Adding validation after business logic. Why: Input could corrupt state before validation catches it. Instead: Validate at the top of the handler before any side effects."
+**Include only anti-patterns you've actually seen or that are realistic risks for this type of work.** If there's only 1-2 genuine anti-patterns, that's fine. Do NOT pad with generic warnings like "don't be vague" — they add noise.
 
 ## Step 4: Build the Quality Checklist
 
-Instead of a numeric rubric (which Claude will game by giving itself 4s), create a **binary checklist** — each item is PASS or FAIL with no middle ground.
+Create a **binary checklist** — each item is PASS or FAIL with no middle ground.
 
-Create 8-12 checklist items organized into three tiers:
+Organize into three tiers:
 
 ### Must-Have (all must pass, or output needs revision)
-Items where failure means the output is not usable. 4-5 items.
-- Each item is a concrete, verifiable yes/no question
-- Example: "Does every API endpoint validate input before processing?"
+Items where failure means the output is not usable. 3-5 items.
+- Each item must be a concrete, verifiable yes/no question
+- A stranger should be able to check it without judgment calls
+- BAD: "Is the writing clear?" (subjective)
+- GOOD: "Does every claim have a source cited?" (verifiable)
 
 ### Should-Have (most should pass)
-Items where failure means the output is below standard but still usable. 3-4 items.
-- Example: "Are error messages specific enough to diagnose without checking logs?"
+Items where failure means below standard but still usable. 2-4 items.
 
 ### Nice-to-Have (bonus quality)
-Items that distinguish good from great. 2-3 items.
-- Example: "Does the test suite include at least one edge case per validation rule?"
+Items that distinguish good from great. 1-3 items.
 
 **Passing criteria:**
 - All must-haves pass
 - At least 2/3 of should-haves pass
 
-**Why a checklist, not a 1-5 rubric:** Numeric self-scoring is unreliable — Claude will rationalize a 4 on everything. Binary pass/fail forces honest assessment: either the input IS validated before processing, or it isn't. No wiggle room.
+**Why a checklist, not a 1-5 rubric:** Numeric self-scoring is unreliable — Claude will rationalize a 4 on everything. Binary pass/fail forces honest assessment: either the claim HAS a source cited, or it doesn't. No wiggle room.
 
 ## Step 5: Write the Files
 
@@ -111,7 +111,7 @@ Update `process-library/README.md` to include the new process in the index table
 
 ## Step 6: Generate the Slash Command
 
-This is critical — create a dedicated slash command so the user can invoke this process directly without remembering the name.
+Create a dedicated slash command so the user can invoke this process directly.
 
 Create `.claude/commands/{process-name}.md` with this content:
 
@@ -142,6 +142,13 @@ After completing all steps, run through every item in `checklist.md`:
 - If any must-have fails: stop and revise before presenting to the user
 - Present the checklist results alongside your output
 
+## Improve
+
+After presenting results, ask the user:
+"Did this run reveal anything worth capturing — a missing step, a new anti-pattern, or a better example for the gold standard?"
+
+If yes, update the relevant process files. If no, move on.
+
 ## Output
 
 Present:
@@ -150,17 +157,19 @@ Present:
 3. A one-line summary: "{N}/{total} checks passed. {Must-have status}. {Any notable decisions made.}"
 ```
 
-## Step 7: Verify
+## Step 7: Validate the Process Itself
 
-Read all files back and check:
-- Could someone unfamiliar follow this process?
-- Is the gold standard exemplar genuinely representative (not the whole output, just the critical part)?
-- Does the decision log capture real tradeoffs (not just "we did the obvious thing")?
-- Are anti-patterns concrete enough to recognize?
-- Are checklist items binary and verifiable (not subjective)?
-- Does the slash command work as a standalone invocation?
+Before saving, present the extracted process to the user for review. Show them:
 
-## Output
+1. **The steps** — "Here are the {N} steps I extracted. Do these match what we actually did? Anything missing or unnecessary?"
+2. **The gold standard exemplar** — "I picked this section as the representative example. Is this the right part to highlight?"
+3. **The checklist** — "Here are the quality checks. Can each of these be answered with a clear yes or no?"
+
+**Do NOT skip this step.** A bad process that gets saved and reused is worse than no process. The user must confirm before files are written.
+
+## Step 8: Save and Confirm
+
+Only after the user approves (or you've incorporated their feedback), write all the files.
 
 Tell the user:
 

@@ -8,7 +8,7 @@ NOTE: If this process has a dedicated slash command (check `.claude/commands/` f
 
 `$ARGUMENTS` — first word is the process name, remaining words are context about what to apply it to.
 
-Example: `/run-process api-endpoint-scaffold for the user notifications endpoint`
+Example: `/run-process competitive-research for CRM tools in the SMB market`
 
 ## Step 1: Load the Process
 
@@ -49,7 +49,6 @@ After producing the complete output, go through every item in `checklist.md`:
 
 ### Must-Have
 - [ ] PASS / FAIL — {checklist item} — Evidence: "{quote from your output}"
-- [ ] PASS / FAIL — {checklist item} — Evidence: "{quote}"
 ...
 
 ### Should-Have
@@ -82,9 +81,9 @@ Do one final check against the gold standard's anti-patterns list. For each anti
 
 This catches issues the checklist might miss — the checklist covers what SHOULD be there, anti-patterns cover what SHOULDN'T.
 
-## Step 7: Save Run Record (Optional)
+## Step 7: Save Run Record
 
-If the user wants to track runs, save to `process-library/{name}/runs/{YYYY-MM-DD}-{brief-description}.md`:
+Save a brief record to `process-library/{name}/runs/{YYYY-MM-DD}-{brief-description}.md`:
 
 ```
 Date: {date}
@@ -93,6 +92,20 @@ Checklist: {N}/{total} passed (must-haves: {status})
 Anti-patterns avoided: {N}/{total}
 Key decisions: {any deviations from gold standard decision log, and why}
 ```
+
+Create the `runs/` directory if it doesn't exist.
+
+## Step 8: Improve the Process
+
+After presenting results, ask the user:
+
+"Did this run reveal anything worth capturing? For example:
+- A step that was missing or unnecessary?
+- A new anti-pattern we hit?
+- A better example for the gold standard?
+- A checklist item that was ambiguous or should be added?"
+
+If the user identifies improvements, update the relevant process files now. This is how processes get better over time.
 
 ## Output
 
