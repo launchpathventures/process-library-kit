@@ -95,24 +95,71 @@ Key decisions: {any deviations from gold standard decision log, and why}
 
 Create the `runs/` directory if it doesn't exist.
 
-## Step 8: Improve the Process
+## Step 8: Process Feedback (CRITICAL — do not skip)
 
-After presenting results, ask the user:
+This is the most important step. After presenting the output and evaluation, walk the user through a structured feedback conversation. This is where the learning happens.
 
-"Did this run reveal anything worth capturing? For example:
-- A step that was missing or unnecessary?
-- A new anti-pattern we hit?
-- A better example for the gold standard?
-- A checklist item that was ambiguous or should be added?"
+### 8a: Assess fit
 
-If the user identifies improvements, update the relevant process files now. This is how processes get better over time.
+First, determine whether this process was the right one for the work. Ask the user:
+
+"**How well did this process fit what you needed?**
+1. **Good fit** — the steps matched the work, just needs minor tweaks
+2. **Partial fit** — some steps were relevant but the work diverged significantly
+3. **Wrong process** — this was actually a different type of work"
+
+Wait for their answer before proceeding.
+
+### 8b: Route based on fit
+
+**If "Good fit"** — proceed to improvement questions (Step 8c).
+
+**If "Partial fit"** — ask: "It sounds like this started as `/{process-name}` but became something different. Two options:
+- **Update this process** to cover the broader scope (if the work is a natural evolution)
+- **Create a new process** for the different part (if it's genuinely a separate type of work)
+Which feels right?"
+
+If they want a new process, run `/extract-process` for the divergent work. If they want to update, proceed to Step 8c with a note to expand scope.
+
+**If "Wrong process"** — ask: "No problem — should we extract what you actually did as a new process? That way next time you'll have the right one." If yes, run `/extract-process`.
+
+### 8c: Capture specific improvements
+
+Only ask this if the process was a good or partial fit. Go through each area:
+
+"Let me check a few things to make this process better for next time:"
+
+1. **Steps**: "Were there any steps that were **missing** (something you had to figure out that should be documented)? Or steps that were **unnecessary** (wasted time, didn't apply)?"
+
+2. **Gold standard**: "Was the example still relevant? Did this run produce something **better** that should replace it?"
+
+3. **Decisions**: "Did you face any **new tradeoffs** that aren't in the decision log? Or did the existing decisions lead you astray?"
+
+4. **Anti-patterns**: "Did you almost make a mistake or hit an issue that should be **warned against** for next time?"
+
+5. **Checklist**: "Were any checklist items **ambiguous** (hard to answer yes/no)? Or is there a quality check that's **missing**?"
+
+For each item the user identifies, update the relevant process file immediately. Don't batch — update as you go so nothing gets lost.
+
+### 8d: Record what changed
+
+Add a summary of improvements to the run record:
+
+```
+Improvements made:
+- {what was changed and why}
+```
+
+Increment the run count in `process.md` and update the "Last updated" date if any process files were changed.
 
 ## Output
 
 Present to the user:
-1. The complete process output
+1. Your complete output
 2. The quality checklist with evidence
 3. Anti-pattern scan results
 4. One-line summary: "{N}/{total} checks passed. {Must-have status}. {Key decision or deviation if any.}"
 
-Tip: "Next time, run this directly with `/{process-name}`."
+Then run the feedback conversation (Step 8).
+
+After feedback is complete, confirm: "Process `/{process-name}` updated with your feedback. {Summary of what changed, or 'No changes needed.'}. Run record saved."

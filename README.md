@@ -80,12 +80,19 @@ Claude loads the process, studies the gold standard, follows the steps, then:
 - Checks output against the anti-patterns list
 - Auto-revises if any must-have check fails
 - Saves a run record automatically
-- **Asks you**: "Did this run reveal a missing step, a new anti-pattern, or a better example?"
 
-### 5. Processes improve through use
-After every run, Claude prompts you to capture what you learned. Over time:
+### 5. Structured feedback after every run
+After delivering the output, Claude asks: **"How well did this process fit?"**
+
+- **Good fit** — Claude walks you through specific improvements: missing steps, better examples, new tradeoffs, new anti-patterns, ambiguous checklist items. Updates process files with anything you identify.
+- **Partial fit** — The work diverged. Claude asks whether to update this process or extract a new one for the different work.
+- **Wrong process** — This was actually a different type of work. Claude offers to extract it as a new process.
+
+This is how the library stays healthy — processes that fit get refined, and genuinely different work becomes its own process instead of being crammed into an existing one.
+
+### 6. The library grows and sharpens
+- Every run either improves an existing process or spawns a new one
 - Anti-patterns accumulate from real failures
-- Steps get added or removed based on what actually happens
 - Gold standards get replaced when better examples emerge
 - Checklist items sharpen when ambiguous ones get rewritten
 

@@ -39,14 +39,19 @@ Quality is evaluated via a binary pass/fail checklist (not a numeric rubric). Ea
 
 Why checklist over rubric: numeric self-scoring is unreliable — Claude will rationalize a 4 on everything. Binary forces honesty: either the claim HAS a source cited, or it doesn't.
 
-## Process Improvement Loop
+## Process Feedback Loop (critical)
 
-Processes improve through use, not through planning. After every run:
-1. Claude saves a run record automatically (checklist results, anti-pattern scan, key decisions)
-2. Claude asks: "Did this run reveal a missing step, a new anti-pattern, or a better example?"
-3. If the user identifies an improvement, Claude updates the process files immediately
+Processes improve through structured feedback after every run. This is the most important part of the system. After every run, Claude must:
 
-This means processes get better every time they're used.
+1. Save a run record automatically (checklist results, anti-pattern scan, key decisions)
+2. Ask the user: **"How well did this process fit what you needed?"** with three options:
+   - **Good fit** — proceed to capture specific improvements (missing steps, better examples, new anti-patterns, ambiguous checklist items)
+   - **Partial fit** — determine whether to update this process or extract a new one for the divergent work
+   - **Wrong process** — offer to extract what was actually done as a new process
+3. Update process files immediately with any improvements identified
+4. Record what changed in the run log
+
+This three-way routing is essential. Without it, processes either never improve (no feedback) or accumulate scope until they're too broad to be useful (everything gets crammed into one process). The "partial fit" and "wrong process" paths ensure new processes get created when the work genuinely diverges.
 
 ## After Completing Work
 

@@ -142,12 +142,22 @@ After completing all steps, run through every item in `checklist.md`:
 - If any must-have fails: stop and revise before presenting to the user
 - Present the checklist results alongside your output
 
-## Improve
+## Feedback (do not skip)
 
-After presenting results, ask the user:
-"Did this run reveal anything worth capturing — a missing step, a new anti-pattern, or a better example for the gold standard?"
+After presenting output and evaluation, ask the user:
 
-If yes, update the relevant process files. If no, move on.
+"**How well did this process fit what you needed?**
+1. **Good fit** — steps matched, minor tweaks at most
+2. **Partial fit** — some steps relevant but work diverged significantly
+3. **Wrong process** — this was actually a different type of work"
+
+**Good fit**: Ask about specific improvements — missing/unnecessary steps, better example, new tradeoffs, new anti-patterns, ambiguous checklist items. Update process files with anything identified.
+
+**Partial fit**: Ask whether to update this process or extract a new one for the divergent work.
+
+**Wrong process**: Offer to extract what was actually done as a new process via `/extract-process`.
+
+Save a run record to `process-library/{process-name}/runs/` and update the run count.
 
 ## Output
 
@@ -155,6 +165,8 @@ Present:
 1. Your complete output
 2. The checklist evaluation (with evidence per item)
 3. A one-line summary: "{N}/{total} checks passed. {Must-have status}. {Any notable decisions made.}"
+
+Then run the feedback conversation. After feedback: "Process updated with your feedback. {Summary of changes, or 'No changes needed.'}."
 ```
 
 ## Step 7: Validate the Process Itself
