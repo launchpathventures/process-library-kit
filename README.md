@@ -6,13 +6,22 @@ When you finish a piece of work with Claude in Co-Work, this kit lets you save t
 
 Over time, you build a personal library of "how I do things" that Claude knows and improves on.
 
-> Also works with Claude Code (CLI). Same setup, same files.
+> Also works with Claude Code in the terminal. Same setup, same files.
 
 ## Get Started
 
 You need a **Claude Pro, Team, or Enterprise account** and a **project folder** you share with Co-Work. That's it.
 
 Open Co-Work with your project folder and paste this:
+
+```
+Please set up a Process Library in this project using https://github.com/launchpathventures/process-library-kit — download the files from that repo and install them into this project. If you can't access the link, let me know. When you're done, show me what's available.
+```
+
+Hit the copy button, paste into Co-Work, and Claude sets everything up.
+
+<details>
+<summary>If Claude has trouble with the link, try this longer version instead</summary>
 
 ```
 I'd like you to set up a Process Library in this project. This will let us save and reuse the approaches we develop together.
@@ -35,7 +44,7 @@ If it worked, set up the project:
 When you're done, show me what files you created and what new slash commands are available.
 ```
 
-Hit the copy button, paste into Co-Work, and Claude sets everything up.
+</details>
 
 ---
 

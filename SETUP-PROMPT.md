@@ -5,6 +5,14 @@ Copy the prompt below and paste it into your Co-Work (or Claude Code) session.
 ---
 
 ```
+Please set up a Process Library in this project using https://github.com/launchpathventures/process-library-kit — download the files from that repo and install them into this project. If you can't access the link, let me know. When you're done, show me what's available.
+```
+
+---
+
+If Claude has trouble accessing the link, use this longer version instead:
+
+```
 I'd like you to set up a Process Library in this project. This will let us save and reuse the approaches we develop together.
 
 Please download the setup files by running this command:
