@@ -1,16 +1,26 @@
 # Setup Prompt
 
-Copy the prompt below and paste it into your Co-Work session.
+Copy the prompt below and paste it into your Co-Work (or Claude Code) session.
 
 ---
 
-I want you to set up a Process Library in this project. This lets us extract repeatable processes from work we do together, save them with quality examples, and reuse them later.
+```
+Set up a Process Library in this project so we can extract and reuse repeatable processes from our work.
 
-Please fetch the setup files from this GitHub repo: https://github.com/launchpathventures/process-library-kit
+Run this command:
+git clone https://github.com/launchpathventures/process-library-kit.git /tmp/process-library-kit
 
-From that repo, copy the following into this project:
-1. The three files from `.claude/commands/` (extract-process.md, run-process.md, list-processes.md)
-2. The entire `process-library/` directory (README.md and the three template files)
-3. Append the contents of the repo's `CLAUDE.md` to this project's `CLAUDE.md` (create it if it doesn't exist)
+IMPORTANT: If the clone fails, stop and tell me. Do NOT make up the file contents.
 
-After setup, confirm what was created and show me the available slash commands.
+If the clone succeeds, do the following:
+1. Create the .claude/commands/ directory in this project if it doesn't exist
+2. Copy these three files from /tmp/process-library-kit/.claude/commands/ into this project's .claude/commands/:
+   - extract-process.md
+   - run-process.md
+   - list-processes.md
+3. Copy the entire /tmp/process-library-kit/process-library/ directory into this project
+4. If this project has a CLAUDE.md, append the contents of /tmp/process-library-kit/CLAUDE.md to the end. If not, copy it as a new file.
+5. Remove /tmp/process-library-kit
+
+After setup, list every file you created and show me the slash commands that are now available.
+```

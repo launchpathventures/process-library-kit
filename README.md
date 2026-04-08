@@ -11,19 +11,27 @@ Every process includes a **gold standard** (curated exemplar + decision log + an
 Open a Co-Work session with your project folder and paste this:
 
 ```
-I want you to set up a Process Library in this project. This lets us extract repeatable processes from work we do together, save them with quality examples, and reuse them later.
+Set up a Process Library in this project so we can extract and reuse repeatable processes from our work.
 
-Please fetch the setup files from this GitHub repo: https://github.com/launchpathventures/process-library-kit
+Run this command:
+git clone https://github.com/launchpathventures/process-library-kit.git /tmp/process-library-kit
 
-From that repo, copy the following into this project:
-1. The three files from .claude/commands/ (extract-process.md, run-process.md, list-processes.md)
-2. The entire process-library/ directory (README.md and the three template files)
-3. Append the contents of the repo's CLAUDE.md to this project's CLAUDE.md (create it if it doesn't exist)
+IMPORTANT: If the clone fails, stop and tell me. Do NOT make up the file contents.
 
-After setup, confirm what was created and show me the available slash commands.
+If the clone succeeds, do the following:
+1. Create the .claude/commands/ directory in this project if it doesn't exist
+2. Copy these three files from /tmp/process-library-kit/.claude/commands/ into this project's .claude/commands/:
+   - extract-process.md
+   - run-process.md
+   - list-processes.md
+3. Copy the entire /tmp/process-library-kit/process-library/ directory into this project
+4. If this project has a CLAUDE.md, append the contents of /tmp/process-library-kit/CLAUDE.md to the end. If not, copy it as a new file.
+5. Remove /tmp/process-library-kit
+
+After setup, list every file you created and show me the slash commands that are now available.
 ```
 
-Hit the copy button in the top-right of the block above, paste into Co-Work, and Claude sets everything up.
+Hit the copy button in the top-right corner, paste into Co-Work, and Claude sets everything up.
 
 ---
 
@@ -100,9 +108,34 @@ That's it. No packages to install, no dependencies, no build steps.
 
 ---
 
-## Alternative Setup
+## Setup
 
-### Copy files manually
+### Option A: Let Claude set it up (recommended)
+
+Open a Co-Work session with your project folder and paste this:
+
+```
+Set up a Process Library in this project so we can extract and reuse repeatable processes from our work.
+
+Run this command:
+git clone https://github.com/launchpathventures/process-library-kit.git /tmp/process-library-kit
+
+IMPORTANT: If the clone fails, stop and tell me. Do NOT make up the file contents.
+
+If the clone succeeds, do the following:
+1. Create the .claude/commands/ directory in this project if it doesn't exist
+2. Copy these three files from /tmp/process-library-kit/.claude/commands/ into this project's .claude/commands/:
+   - extract-process.md
+   - run-process.md
+   - list-processes.md
+3. Copy the entire /tmp/process-library-kit/process-library/ directory into this project
+4. If this project has a CLAUDE.md, append the contents of /tmp/process-library-kit/CLAUDE.md to the end. If not, copy it as a new file.
+5. Remove /tmp/process-library-kit
+
+After setup, list every file you created and show me the slash commands that are now available.
+```
+
+### Option B: Copy files manually
 
 If you prefer to set things up yourself:
 
@@ -113,22 +146,6 @@ If you prefer to set things up yourself:
    - `.claude/commands/list-processes.md`
    - `process-library/` (the whole directory)
 3. **Add instructions** — append the contents of [`CLAUDE.md`](./CLAUDE.md) to your project's `CLAUDE.md` (or copy it if you don't have one yet)
-
-### Claude Code CLI
-
-```bash
-# Clone this repo
-git clone https://github.com/launchpathventures/process-library-kit.git
-
-# Copy into your project
-cp -r process-library-kit/.claude/commands/extract-process.md YOUR_PROJECT/.claude/commands/
-cp -r process-library-kit/.claude/commands/run-process.md YOUR_PROJECT/.claude/commands/
-cp -r process-library-kit/.claude/commands/list-processes.md YOUR_PROJECT/.claude/commands/
-cp -r process-library-kit/process-library YOUR_PROJECT/
-
-# Add the CLAUDE.md section (or copy if you don't have one)
-cat process-library-kit/CLAUDE.md >> YOUR_PROJECT/CLAUDE.md
-```
 
 ### After setup
 
