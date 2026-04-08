@@ -1,12 +1,14 @@
-# Process Library Kit for Claude Code
+# Process Library Kit
 
-A drop-in toolkit that gives Claude Code the ability to **extract repeatable processes from your work**, **replay them with quality evaluation**, and **build a cumulative library** of how you get things done.
+A drop-in toolkit for **Claude Co-Work** (and Claude Code CLI) that gives Claude the ability to **extract repeatable processes from your work**, **replay them with quality evaluation**, and **build a cumulative library** of how you get things done.
 
 Every process includes a **gold standard** (curated exemplar + decision log + anti-patterns) and a **binary quality checklist** so Claude evaluates honestly instead of giving itself 4/5 on everything.
 
+> Works with both **Co-Work** (claude.ai) and **Claude Code** (CLI). The setup is identical — Co-Work reads `.claude/commands/` and `CLAUDE.md` the same way Claude Code does.
+
 ## The Problem
 
-You do great work with Claude Code, but:
+You do great work with Claude, but:
 - Next session starts from scratch — no memory of *how* you did it
 - Similar tasks get approached differently each time
 - Quality varies because there's no reference for "what good looks like"
@@ -60,7 +62,16 @@ Claude loads the process, studies the gold standard, follows the steps, then:
 
 ## Setup (5 minutes)
 
-### Step 1: Copy the files into your project
+### For Co-Work (claude.ai)
+
+1. **Download or clone** this repo
+2. **Copy** these into the project folder you share with Co-Work:
+   - `.claude/commands/` — the three slash command files
+   - `process-library/` — the library home with templates
+3. **Add instructions** — append the contents of [`CLAUDE.md`](./CLAUDE.md) to your project's `CLAUDE.md` (or copy it if you don't have one yet)
+4. **Open Co-Work**, select your project folder, and start working. The slash commands will be available immediately.
+
+### For Claude Code (CLI)
 
 ```bash
 # Clone this repo
@@ -71,25 +82,14 @@ cp -r process-library-kit/.claude/commands/extract-process.md YOUR_PROJECT/.clau
 cp -r process-library-kit/.claude/commands/run-process.md YOUR_PROJECT/.claude/commands/
 cp -r process-library-kit/.claude/commands/list-processes.md YOUR_PROJECT/.claude/commands/
 cp -r process-library-kit/process-library YOUR_PROJECT/
+
+# Add the CLAUDE.md section (or copy if you don't have one)
+cat process-library-kit/CLAUDE.md >> YOUR_PROJECT/CLAUDE.md
 ```
 
-Or just copy the directories manually:
-- `.claude/commands/` — the three slash command files
-- `process-library/` — the library home with templates
+### Then what?
 
-### Step 2: Add the CLAUDE.md section
-
-Append the contents of [`CLAUDE.md`](./CLAUDE.md) from this repo to your project's `CLAUDE.md`.
-
-If your project doesn't have a `CLAUDE.md` yet, copy the whole file:
-
-```bash
-cp process-library-kit/CLAUDE.md YOUR_PROJECT/CLAUDE.md
-```
-
-### Step 3: Start working
-
-That's it. After finishing work, run `/extract-process`. Each extracted process becomes its own slash command.
+After finishing any piece of work, run `/extract-process`. Each extracted process becomes its own slash command.
 
 ---
 
@@ -192,7 +192,7 @@ Auto-generated so you type `/{name}` directly instead of `/run-process {name}`.
 
 **Problem with v1:** Users have to remember process names and type `/run-process api-endpoint-scaffold`. Friction kills adoption.
 
-**What actually works:** Each process generates its own `.claude/commands/{name}.md`. Type `/{name}` directly. The process library becomes a growing set of slash commands that show up in Claude Code's command palette.
+**What actually works:** Each process generates its own `.claude/commands/{name}.md`. Type `/{name}` directly. The process library becomes a growing set of slash commands that show up in Co-Work's and Claude Code's command palette.
 
 ---
 
