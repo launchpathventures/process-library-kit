@@ -60,18 +60,49 @@ Claude loads the process, studies the gold standard, follows the steps, then:
 
 ---
 
-## Setup (5 minutes)
+## Prerequisites
+
+Before setup, make sure you have:
 
 ### For Co-Work (claude.ai)
 
-1. **Download or clone** this repo
-2. **Copy** these into the project folder you share with Co-Work:
-   - `.claude/commands/` — the three slash command files
-   - `process-library/` — the library home with templates
-3. **Add instructions** — append the contents of [`CLAUDE.md`](./CLAUDE.md) to your project's `CLAUDE.md` (or copy it if you don't have one yet)
-4. **Open Co-Work**, select your project folder, and start working. The slash commands will be available immediately.
+- **A Claude Pro, Team, or Enterprise account** — Co-Work is available on paid plans
+- **A project folder** — a folder on your computer that you'll share with Co-Work. This is where your code/docs/work lives. It can be an existing project or a new empty folder.
+- **Git initialized (recommended)** — the `/extract-process` command uses `git diff` and `git log` to analyze what you just did. If your folder isn't a git repo, extraction will still work but it'll rely on conversation context instead of diffs. To initialize: open Terminal, `cd` to your folder, and run `git init`.
+
+That's it. No packages to install, no dependencies, no build steps.
 
 ### For Claude Code (CLI)
+
+- **Claude Code installed** — [installation guide](https://docs.anthropic.com/en/docs/claude-code)
+- **A project directory** with git initialized
+- Same requirements as above, but you're working in the terminal
+
+---
+
+## Setup
+
+### Option A: Let Claude set it up for you (recommended)
+
+Open a Co-Work session with your project folder, then paste the contents of **[SETUP-PROMPT.md](./SETUP-PROMPT.md)** into the chat.
+
+Claude will create all the files in the right places. Done.
+
+> **Tip:** You can view the raw setup prompt on GitHub — click SETUP-PROMPT.md above, then copy everything below the `---` line.
+
+### Option B: Copy files manually
+
+If you prefer to set things up yourself:
+
+1. **Download or clone** this repo
+2. **Copy** these into your project folder:
+   - `.claude/commands/extract-process.md`
+   - `.claude/commands/run-process.md`
+   - `.claude/commands/list-processes.md`
+   - `process-library/` (the whole directory)
+3. **Add instructions** — append the contents of [`CLAUDE.md`](./CLAUDE.md) to your project's `CLAUDE.md` (or copy it if you don't have one yet)
+
+### Option C: Claude Code CLI
 
 ```bash
 # Clone this repo
@@ -87,9 +118,11 @@ cp -r process-library-kit/process-library YOUR_PROJECT/
 cat process-library-kit/CLAUDE.md >> YOUR_PROJECT/CLAUDE.md
 ```
 
-### Then what?
+### After setup
 
-After finishing any piece of work, run `/extract-process`. Each extracted process becomes its own slash command.
+Your process library starts empty. The first time you finish a piece of work in Co-Work, Claude will suggest: *"This looks like a repeatable process. Want to capture it?"*
+
+Or run `/extract-process` yourself anytime.
 
 ---
 
