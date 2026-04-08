@@ -1,6 +1,6 @@
 # Process Library
 
-Repeatable processes extracted from real work. Each includes steps, a gold standard (exemplar + decisions + anti-patterns), and a binary quality checklist.
+Repeatable processes extracted from real work. Each includes steps, a reference example (best output + key decisions + mistakes to avoid), and a quality checklist.
 
 ## Commands
 
@@ -12,6 +12,7 @@ Every process gets its own slash command. Use `/list-processes` to see them all,
 | `/extract-process` | Capture a new process from recently completed work |
 | `/list-processes` | Browse all available processes |
 | `/run-process {name}` | Generic runner (prefer the direct command) |
+| `/update-process-library` | Check for and install framework updates |
 
 ## Index
 
@@ -21,8 +22,8 @@ Every process gets its own slash command. Use `/list-processes` to see them all,
 
 ## How Processes Improve
 
-1. **Gold standards get replaced** when a better exemplar emerges
-2. **Decision logs grow** as new tradeoffs are encountered
-3. **Anti-patterns accumulate** from real failures during runs
+1. **Examples get replaced** when a better one emerges from a run
+2. **Key decisions grow** as new tradeoffs are encountered
+3. **Mistakes to avoid accumulate** from real failures during runs
 4. **Checklist items sharpen** when ambiguous items get rewritten
 5. **Steps refine** when runs reveal missing or unnecessary steps

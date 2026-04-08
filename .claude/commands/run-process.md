@@ -8,6 +8,8 @@ NOTE: If this process has a dedicated slash command (check `.claude/commands/` f
 
 `$ARGUMENTS` — first word is the process name, remaining words are context about what to apply it to.
 
+If `$ARGUMENTS` is empty (user just typed `/run-process` with nothing after it), ask: "Which process would you like to run?" and run `/list-processes` to show what's available.
+
 Example: `/run-process competitive-research for CRM tools in the SMB market`
 
 ## Step 1: Load the Process
@@ -36,7 +38,7 @@ Follow `process.md` step by step:
 3. Do the work
 4. Produce the specified output
 
-At each decision point, check the gold standard's decision log. If you're facing a similar choice, follow the documented reasoning. If the situation is genuinely different, note why you're deviating.
+At each decision point, check the reference example's key decisions. If you're facing a similar choice, follow the documented reasoning. If the situation is genuinely different, note why you're deviating.
 
 If a step requires human judgment, pause and ask.
 
@@ -47,19 +49,19 @@ After producing the complete output, go through every item in `checklist.md`:
 ```
 ## Quality Checklist
 
-### Must-Have
+### Must Pass
 - [ ] PASS / FAIL — {checklist item} — Evidence: "{quote from your output}"
 ...
 
-### Should-Have
+### Should Pass
 - [ ] PASS / FAIL — {checklist item} — Evidence: "{quote}"
 ...
 
-### Nice-to-Have
+### Bonus
 - [ ] PASS / FAIL — {checklist item} — Evidence: "{quote}"
 ...
 
-**Result:** {N}/{total} passed | Must-haves: {all passed / X failed} | Should-haves: {N}/{M} passed
+**Result:** {N}/{total} passed | Must Pass: {all passed / X failed} | Should Pass: {N}/{M} passed
 ```
 
 Rules:
@@ -69,9 +71,9 @@ Rules:
 
 ## Step 5: Revise if Needed
 
-**Any must-have failed:** Stop. Revise the specific failing sections. Re-check ONLY the items that failed (don't re-run the whole checklist). Present the revision with updated checklist.
+**Any "Must Pass" item failed:** Stop. Revise the specific failing sections. Re-check ONLY the items that failed (don't re-run the whole checklist). Present the revision with updated checklist.
 
-**Less than 2/3 should-haves passed:** Flag to the user: "Output is below standard on {N} should-have items. Want me to revise, or is this acceptable for your use case?" Let the user decide — not every run needs perfection.
+**Less than 2/3 "Should Pass" items passed:** Flag to the user: "Output is below standard on {N} 'Should Pass' items. Want me to revise, or is this acceptable for your use case?" Let the user decide — not every run needs perfection.
 
 ## Step 6: Check Against Mistakes to Avoid
 
@@ -88,7 +90,7 @@ Save a brief record to `process-library/{name}/runs/{YYYY-MM-DD}-{brief-descript
 ```
 Date: {date}
 Context: {what this was applied to}
-Checklist: {N}/{total} passed (must-haves: {status})
+Checklist: {N}/{total} passed (Must Pass: {status})
 Mistakes avoided: {N}/{total}
 Key decisions: {any deviations from gold standard decision log, and why}
 ```
@@ -192,7 +194,7 @@ Increment the run count in `process.md`. Update "Last updated" date if any files
 Present to the user:
 1. Your complete output
 2. The quality checklist with evidence
-3. One-line summary: "{N}/{total} checks passed. {Must-have status}."
+3. One-line summary: "{N}/{total} checks passed. {Must Pass status}."
 
 Then ask the feedback question.
 

@@ -21,16 +21,27 @@ If the remote version is the same as the local version, tell the user: "You're o
 
 If the remote version is higher, tell the user: "An update is available (you have v{local}, latest is v{remote}). Want me to update?"
 
-## Step 4: Update (if user agrees)
+## Step 4: Download (if user agrees)
 
 Run:
 ```
 git clone https://github.com/launchpathventures/process-library-kit.git /tmp/process-library-kit-update
 ```
 
-IMPORTANT: If the clone fails, stop and tell the user. Do NOT make up file contents.
+If that fails, try:
+```
+curl -L https://github.com/launchpathventures/process-library-kit/archive/refs/heads/main.zip -o /tmp/plk-update.zip && unzip -o /tmp/plk-update.zip -d /tmp && mv /tmp/process-library-kit-main /tmp/process-library-kit-update && rm /tmp/plk-update.zip
+```
 
-If it succeeds, update ONLY the framework files (not the user's processes or CLAUDE.md):
+If BOTH fail, stop and tell the user. Do NOT make up file contents.
+
+## Step 5: Check for CLAUDE.md Changes
+
+BEFORE doing anything else, compare the new CLAUDE.md with the user's current one. If there are new sections or significant changes, note them — you'll tell the user about these after the update.
+
+## Step 6: Install Update
+
+Update ONLY the framework files (not the user's processes or CLAUDE.md):
 1. Replace `.claude/commands/extract-process.md` with the new version
 2. Replace `.claude/commands/run-process.md` with the new version
 3. Replace `.claude/commands/list-processes.md` with the new version
@@ -46,17 +57,17 @@ Do NOT touch:
 - Any auto-generated slash commands (`.claude/commands/{process-name}.md`)
 - `process-library/README.md` (the user's index)
 
-After updating:
+## Step 7: Clean Up
+
 ```
 rm -rf /tmp/process-library-kit-update
 ```
 
+## Step 8: Report
+
 Tell the user: "Updated to v{version}. Your processes and settings are untouched — only the framework commands and templates were updated."
 
-## Step 5: CLAUDE.md Changes
-
-Check if /tmp/process-library-kit-update/CLAUDE.md has significant changes by comparing it with the user's. If there are new sections, tell the user:
-
-"The framework's CLAUDE.md has new instructions. Want me to show you what changed so you can decide whether to add it to yours?"
+If there were CLAUDE.md changes (from Step 5):
+"The framework's instructions file has new content. Want me to show you what changed so you can decide whether to add it to yours?"
 
 Let the user decide — never auto-modify their CLAUDE.md.

@@ -1,6 +1,6 @@
 # Process Library
 
-A cumulative library of repeatable processes extracted from real work. Each process captures HOW a type of work gets done well, with a gold standard example, decision log, anti-patterns, and a binary quality checklist.
+A cumulative library of repeatable processes extracted from real work. Each process captures HOW a type of work gets done well, with a reference example, key decisions, mistakes to avoid, and a quality checklist.
 
 ## Quick Reference
 
@@ -27,8 +27,8 @@ All processes are stored in `process-library/`. Each process is a directory:
 ```
 process-library/{process-name}/
   process.md              — Definition: when to use, inputs, steps, outputs
-  gold-standard.md        — Exemplar excerpt + decision log + anti-patterns
-  checklist.md            — Binary quality checklist (pass/fail, no partial credit)
+  gold-standard.md        — Best output example + key decisions + mistakes to avoid
+  checklist.md            — Quality checklist (yes/no, no partial credit)
   runs/                   — Automatic run records with scores
 ```
 
@@ -47,7 +47,7 @@ Each process has a reference example with three sections:
 Quality is evaluated via a binary pass/fail checklist (not a numeric rubric). Each item:
 - Is a concrete, verifiable yes/no question (a stranger could check it)
 - Requires a one-line evidence citation (quote the output). No evidence = FAIL.
-- Falls into must-have (all must pass), should-have (2/3 must pass), or nice-to-have (bonus)
+- Falls into Must Pass (all must pass), Should Pass (2/3 must pass), or Bonus
 
 Why checklist over scores: numeric self-scoring is unreliable. Binary forces honesty: either the claim HAS a source cited, or it doesn't.
 
@@ -55,7 +55,7 @@ Why checklist over scores: numeric self-scoring is unreliable. Binary forces hon
 
 Processes improve through structured feedback after every run. This is the most important part of the system. After every run, Claude must:
 
-1. Save a run record automatically (checklist results, anti-pattern scan, key decisions)
+1. Save a run record automatically (checklist results, mistakes check, key decisions)
 2. Ask the user: **"How did that work?"** with three options:
    - **Worked well** — ask one follow-up: "Anything to tweak for next time?" Update if yes.
    - **Mostly worked, but went in a different direction** — ask whether to update this process or save the new approach as its own
@@ -80,5 +80,5 @@ Do not prompt for trivial fixes or one-off tasks.
 
 When extracting a process, always present the draft to the user for review BEFORE saving files. A bad process that gets saved and reused is worse than no process. The user must confirm:
 - The steps match what actually happened
-- The gold standard exemplar is the right section to highlight
+- The reference example is the right section to highlight
 - The checklist items can each be answered with a clear yes or no

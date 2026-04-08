@@ -88,22 +88,22 @@ Create a **binary checklist** — each item is PASS or FAIL with no middle groun
 
 Organize into three tiers:
 
-### Must-Have (all must pass, or output needs revision)
+### Must Pass (all must pass, or output needs revision)
 Items where failure means the output is not usable. 3-5 items.
 - Each item must be a concrete, verifiable yes/no question
 - A stranger should be able to check it without judgment calls
 - BAD: "Is the writing clear?" (subjective)
 - GOOD: "Does every claim have a source cited?" (verifiable)
 
-### Should-Have (most should pass)
+### Should Pass (most should pass)
 Items where failure means below standard but still usable. 2-4 items.
 
-### Nice-to-Have (bonus quality)
+### Bonus (distinguishes good from great)
 Items that distinguish good from great. 1-3 items.
 
 **Passing criteria:**
-- All must-haves pass
-- At least 2/3 of should-haves pass
+- All "Must Pass" items pass
+- At least 2/3 of "Should Pass" items pass
 
 **Why a checklist, not a 1-5 rubric:** Numeric self-scoring is unreliable — Claude will rationalize a 4 on everything. Binary pass/fail forces honest assessment: either the claim HAS a source cited, or it doesn't. No wiggle room.
 
@@ -137,19 +137,19 @@ If the above is blank (the user just typed `/{process-name}` with no details), a
 ## Load the process
 
 Read these files in order:
-1. `process-library/{process-name}/gold-standard.md` — study this FIRST. Internalize the decisions, the anti-patterns, and the exemplar quality level.
+1. `process-library/{process-name}/gold-standard.md` — study this FIRST. Internalize the key decisions, the mistakes to avoid, and the quality level of the example.
 2. `process-library/{process-name}/process.md` — the steps to follow.
 3. `process-library/{process-name}/checklist.md` — the quality checklist you will evaluate against when done.
 
 ## Execute
 
-Follow the steps in `process.md`. At each step, refer back to the gold standard's decision log — if you face a similar decision, follow the same reasoning unless the user's context demands otherwise.
+Follow the steps in `process.md`. At each step, refer back to the reference example's key decisions — if you face a similar decision, follow the same reasoning unless the user's context demands otherwise.
 
 ## Evaluate
 
 After completing all steps, run through every item in `checklist.md`:
 - For each item, state PASS or FAIL with a one-line evidence citation (quote the specific part of your output)
-- If any must-have fails: stop and revise before presenting to the user
+- If any "Must Pass" item fails: stop and revise before presenting to the user
 - Present the checklist results alongside your output
 
 ## Feedback (do not skip)
@@ -181,7 +181,7 @@ Save a run record. Increment run count. Update "Last updated" if files changed.
 Present:
 1. Your complete output
 2. The checklist evaluation (with evidence per item)
-3. A one-line summary: "{N}/{total} checks passed. {Must-have status}."
+3. A one-line summary: "{N}/{total} checks passed. {Must Pass status}."
 
 Then ask the feedback question. After: "Process `/{process-name}` updated: {what changed, or 'No changes needed.'}"
 ```
@@ -207,8 +207,8 @@ Process extracted: `{name}`
 
 Files created:
 - `process-library/{name}/process.md` — {N} steps
-- `process-library/{name}/gold-standard.md` — exemplar + {N} decisions + {N} anti-patterns
-- `process-library/{name}/checklist.md` — {N} checks ({N} must-have, {N} should-have, {N} nice-to-have)
+- `process-library/{name}/gold-standard.md` — example + {N} decisions + {N} mistakes to avoid
+- `process-library/{name}/checklist.md` — {N} checks ({N} must pass, {N} should pass, {N} bonus)
 - `.claude/commands/{name}.md` — invoke directly with `/{name}`
 
 To run this process: `/{name} [context about what to apply it to]`
