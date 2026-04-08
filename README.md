@@ -67,15 +67,14 @@ Before setup, make sure you have:
 ### For Co-Work (claude.ai)
 
 - **A Claude Pro, Team, or Enterprise account** — Co-Work is available on paid plans
-- **A project folder** — a folder on your computer that you'll share with Co-Work. This is where your code/docs/work lives. It can be an existing project or a new empty folder.
-- **Git initialized (recommended)** — the `/extract-process` command uses `git diff` and `git log` to analyze what you just did. If your folder isn't a git repo, extraction will still work but it'll rely on conversation context instead of diffs. To initialize: open Terminal, `cd` to your folder, and run `git init`.
+- **A project folder** — a folder on your computer that you'll share with Co-Work. This is where your code, docs, or other work lives. It can be an existing project or a new empty folder.
 
 That's it. No packages to install, no dependencies, no build steps.
 
 ### For Claude Code (CLI)
 
 - **Claude Code installed** — [installation guide](https://docs.anthropic.com/en/docs/claude-code)
-- **A project directory** with git initialized
+- **A project directory**
 - Same requirements as above, but you're working in the terminal
 
 ---

@@ -72,12 +72,11 @@ You are analyzing recently completed work to extract a repeatable process for th
 
 ## Gather Context
 
-Before anything, collect evidence of what just happened:
+Before anything, collect evidence of what just happened. Use whichever sources are available:
 
-1. **Git diff**: Run `git diff HEAD~3` (adjust range if needed) to see what changed
-2. **Git log**: Run `git log --oneline -10` for the sequence of commits
-3. **Read key files**: Inspect the most important files that were created or modified
-4. **Conversation context**: Consider what was asked for and the steps you took
+1. **Check if this is a git repo**: Run `git status`. If it works, also run `git diff HEAD~3` and `git log --oneline -10` to see what changed and in what order. If git is not available, skip this — the other sources are sufficient.
+2. **Read key files**: Inspect the most important files that were created or modified during this session.
+3. **Conversation context**: Review what the user asked for and the steps you took together. This is often the richest source of information about the process.
 
 ## Step 1: Identify the Process
 
