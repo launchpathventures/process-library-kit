@@ -4,11 +4,19 @@ You are analyzing recently completed work to extract a repeatable process for th
 
 ## Gather Context
 
-Before anything, collect evidence of what just happened. Use whichever sources are available:
+First, check whether there's actually work to extract from:
+- Was significant work done in this session? (not just setup or a quick question)
+- Can you identify what was produced? (a document, code, research, analysis, etc.)
+
+If there's nothing substantial to extract from (e.g., the user just started a fresh session), tell them: "It looks like we haven't done work together in this session yet. Try running `/extract-process` after we've completed a piece of work, and I'll capture the approach we used."
+
+If there IS work to extract, collect evidence using whichever sources are available:
 
 1. **Check if this is a git repo**: Run `git status`. If it works, also run `git diff HEAD~3` and `git log --oneline -10` to see what changed and in what order. If git is not available, skip this — the other sources are sufficient.
 2. **Read key files**: Inspect the most important files that were created or modified during this session.
 3. **Conversation context**: Review what the user asked for and the steps you took together. This is often the richest source of information about the process.
+
+Note: If this was a long session, early steps may have dropped from context. After extracting the steps, ask the user if anything is missing from the beginning of the work.
 
 ## Step 1: Identify the Process
 
@@ -123,6 +131,8 @@ You are executing the **{process-name}** process. This is a repeatable process e
 ## Context from user
 
 $ARGUMENTS
+
+If the above is blank (the user just typed `/{process-name}` with no details), ask: "What would you like to apply this process to?" Wait for their answer before proceeding.
 
 ## Load the process
 

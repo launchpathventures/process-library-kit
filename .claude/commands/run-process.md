@@ -19,14 +19,14 @@ Read these files in order:
 
 If the process doesn't exist, tell the user and run `/list-processes`.
 
-## Step 2: Internalize the Gold Standard
+## Step 2: Study the Reference Example
 
-Before starting work, study the gold standard. Focus on:
-- **The exemplar**: What does the critical output actually look like? What's the structure, format, level of detail?
-- **The decision log**: What tradeoffs were made and why? If you face similar decisions, follow the same reasoning unless the user's context demands otherwise.
-- **The anti-patterns**: What specifically should you NOT do? These are your guardrails.
+Before starting work, study the gold standard / reference example file. Focus on:
+- **The example**: What does the critical output actually look like? What's the structure, format, level of detail?
+- **The key decisions**: What tradeoffs were made and why? If you face similar decisions, follow the same reasoning unless the user's context demands otherwise.
+- **The mistakes to avoid**: What specifically should you NOT do? These are your guardrails.
 
-Do NOT just skim this. The decision log is the most valuable part — it captures the judgment that made the original output good.
+Do NOT just skim this. The key decisions section is the most valuable part — it captures the judgment that made the original output good.
 
 ## Step 3: Execute the Process Steps
 
@@ -73,13 +73,13 @@ Rules:
 
 **Less than 2/3 should-haves passed:** Flag to the user: "Output is below standard on {N} should-have items. Want me to revise, or is this acceptable for your use case?" Let the user decide — not every run needs perfection.
 
-## Step 6: Anti-Pattern Scan
+## Step 6: Check Against Mistakes to Avoid
 
-Do one final check against the gold standard's anti-patterns list. For each anti-pattern:
+Do one final check against the "Mistakes to Avoid" section in the reference example. For each listed mistake:
 - Did you avoid it? (yes/no)
 - If no: where in your output does it appear?
 
-This catches issues the checklist might miss — the checklist covers what SHOULD be there, anti-patterns cover what SHOULDN'T.
+This catches issues the checklist might miss — the checklist covers what SHOULD be there, the mistakes list covers what SHOULDN'T.
 
 ## Step 7: Save Run Record
 
@@ -89,7 +89,7 @@ Save a brief record to `process-library/{name}/runs/{YYYY-MM-DD}-{brief-descript
 Date: {date}
 Context: {what this was applied to}
 Checklist: {N}/{total} passed (must-haves: {status})
-Anti-patterns avoided: {N}/{total}
+Mistakes avoided: {N}/{total}
 Key decisions: {any deviations from gold standard decision log, and why}
 ```
 

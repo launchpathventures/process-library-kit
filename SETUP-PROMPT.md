@@ -10,7 +10,10 @@ I'd like you to set up a Process Library in this project. This will let us save 
 Please download the setup files by running this command:
 git clone https://github.com/launchpathventures/process-library-kit.git /tmp/process-library-kit
 
-IMPORTANT: If that command fails for any reason, stop and tell me. Do NOT try to create the files from memory.
+If that command fails, try this alternative:
+curl -L https://github.com/launchpathventures/process-library-kit/archive/refs/heads/main.zip -o /tmp/plk.zip && unzip -o /tmp/plk.zip -d /tmp && mv /tmp/process-library-kit-main /tmp/process-library-kit && rm /tmp/plk.zip
+
+If BOTH commands fail, stop and tell me — do NOT try to create the files from memory.
 
 If it worked, set up the project:
 1. Create a .claude/commands/ directory in this project if it doesn't already exist
