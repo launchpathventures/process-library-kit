@@ -6,6 +6,27 @@ Every process includes a **gold standard** (curated exemplar + decision log + an
 
 > Works with both **Co-Work** (claude.ai) and **Claude Code** (CLI). The setup is identical — Co-Work reads `.claude/commands/` and `CLAUDE.md` the same way Claude Code does.
 
+## Get Started
+
+Open a Co-Work session with your project folder and paste this:
+
+```
+I want you to set up a Process Library in this project. This lets us extract repeatable processes from work we do together, save them with quality examples, and reuse them later.
+
+Please fetch the setup files from this GitHub repo: https://github.com/launchpathventures/process-library-kit
+
+From that repo, copy the following into this project:
+1. The three files from .claude/commands/ (extract-process.md, run-process.md, list-processes.md)
+2. The entire process-library/ directory (README.md and the three template files)
+3. Append the contents of the repo's CLAUDE.md to this project's CLAUDE.md (create it if it doesn't exist)
+
+After setup, confirm what was created and show me the available slash commands.
+```
+
+Hit the copy button in the top-right of the block above, paste into Co-Work, and Claude sets everything up.
+
+---
+
 ## The Problem
 
 You do great work with Claude, but:
@@ -79,28 +100,9 @@ That's it. No packages to install, no dependencies, no build steps.
 
 ---
 
-## Setup
+## Alternative Setup
 
-### Option A: Let Claude set it up for you (recommended)
-
-Open a Co-Work session with your project folder and paste this:
-
-```
-I want you to set up a Process Library in this project. This lets us extract repeatable processes from work we do together, save them with quality examples, and reuse them later.
-
-Please fetch the setup files from this GitHub repo: https://github.com/launchpathventures/process-library-kit
-
-From that repo, copy the following into this project:
-1. The three files from .claude/commands/ (extract-process.md, run-process.md, list-processes.md)
-2. The entire process-library/ directory (README.md and the three template files)
-3. Append the contents of the repo's CLAUDE.md to this project's CLAUDE.md (create it if it doesn't exist)
-
-After setup, confirm what was created and show me the available slash commands.
-```
-
-Hit the copy button in the top-right of the block above, paste into Co-Work, and Claude sets everything up.
-
-### Option B: Copy files manually
+### Copy files manually
 
 If you prefer to set things up yourself:
 
@@ -112,7 +114,7 @@ If you prefer to set things up yourself:
    - `process-library/` (the whole directory)
 3. **Add instructions** — append the contents of [`CLAUDE.md`](./CLAUDE.md) to your project's `CLAUDE.md` (or copy it if you don't have one yet)
 
-### Option C: Claude Code CLI
+### Claude Code CLI
 
 ```bash
 # Clone this repo
