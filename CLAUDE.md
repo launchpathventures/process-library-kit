@@ -1,12 +1,12 @@
 # Process Library
 
-A cumulative library of repeatable processes extracted from real work. Each process captures HOW a type of work gets done well, with a gold standard example and evaluation criteria for quality scoring.
+A cumulative library of repeatable processes extracted from real work. Each process captures HOW a type of work gets done well, with a gold standard example, decision log, anti-patterns, and a binary quality checklist.
 
 ## Quick Reference
 
-- `/extract-process` — After completing work, analyze what was done and capture it as a reusable process
-- `/run-process {name}` — Execute a named process with gold-standard evaluation
-- `/list-processes` — Browse all available processes
+- `/extract-process` — After completing work, analyze what was done and capture it as a reusable process with its own slash command
+- `/list-processes` — Browse all available processes and their slash commands
+- `/{process-name}` — Each process gets its own slash command for direct invocation
 
 ## Where Processes Live
 
@@ -15,13 +15,28 @@ All processes are stored in `process-library/`. Each process is a directory:
 ```
 process-library/{process-name}/
   process.md              — Definition: when to use, inputs, steps, outputs
-  gold-standard.md        — Exemplar: a real example of excellent output (annotated)
-  evaluation-criteria.md  — Rubric: 4-6 dimensions scored 1-5
+  gold-standard.md        — Exemplar excerpt + decision log + anti-patterns
+  checklist.md            — Binary quality checklist (pass/fail, no partial credit)
 ```
 
-## Process Quality Rule
+Each process also generates a slash command at `.claude/commands/{process-name}.md` for direct invocation.
 
-A process is only as good as its gold standard. Every gold standard must be a REAL output from REAL work, not a hypothetical. If the work had flaws, note them — don't present flawed work as the standard without caveats.
+## Gold Standard Design
+
+A gold standard has three sections — each serves a different purpose:
+
+1. **Exemplar** — A curated excerpt (the critical 20-30%, not the whole output). Real artifact, not hypothetical.
+2. **Decision Log** — The 3-6 key decisions and tradeoffs that shaped the output. This is what actually prevents future runs from making worse choices.
+3. **Anti-Patterns** — 3-5 concrete things that would make the output BAD. More useful than praise.
+
+## Quality Checklist Design
+
+Quality is evaluated via a binary pass/fail checklist (not a numeric rubric). Each item:
+- Is a concrete, verifiable yes/no question
+- Requires a one-line evidence citation (quote the output). No evidence = FAIL.
+- Falls into must-have (all must pass), should-have (2/3 must pass), or nice-to-have (bonus)
+
+Why checklist over rubric: numeric self-scoring is unreliable — Claude will rationalize a 4 on everything. Binary forces honesty: either input IS validated before processing, or it isn't.
 
 ## After Completing Work
 

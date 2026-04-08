@@ -2,6 +2,8 @@
 
 You are executing a named process from the process library and evaluating output against its gold standard.
 
+NOTE: If this process has a dedicated slash command (check `.claude/commands/` for a file matching the process name), tell the user they can invoke it directly next time (e.g., `/{process-name}`).
+
 ## Arguments
 
 `$ARGUMENTS` — first word is the process name, remaining words are context about what to apply it to.
@@ -10,22 +12,21 @@ Example: `/run-process api-endpoint-scaffold for the user notifications endpoint
 
 ## Step 1: Load the Process
 
-Read these files:
-1. `process-library/{process-name}/process.md`
-2. `process-library/{process-name}/gold-standard.md`
-3. `process-library/{process-name}/evaluation-criteria.md`
+Read these files in order:
+1. `process-library/{process-name}/gold-standard.md` — study this FIRST
+2. `process-library/{process-name}/process.md` — the steps
+3. `process-library/{process-name}/checklist.md` — the quality checklist
 
 If the process doesn't exist, tell the user and run `/list-processes`.
 
 ## Step 2: Internalize the Gold Standard
 
-Before starting work, study the gold standard carefully. Note:
-- The structure and format of excellent output
-- The level of detail and specificity
-- The tone and voice
-- What the annotations say about WHY it's good
+Before starting work, study the gold standard. Focus on:
+- **The exemplar**: What does the critical output actually look like? What's the structure, format, level of detail?
+- **The decision log**: What tradeoffs were made and why? If you face similar decisions, follow the same reasoning unless the user's context demands otherwise.
+- **The anti-patterns**: What specifically should you NOT do? These are your guardrails.
 
-This is your target quality bar.
+Do NOT just skim this. The decision log is the most valuable part — it captures the judgment that made the original output good.
 
 ## Step 3: Execute the Process Steps
 
@@ -34,63 +35,71 @@ Follow `process.md` step by step:
 2. Gather the specified inputs
 3. Do the work
 4. Produce the specified output
-5. **Quality check per step**: Does your output for this step match the quality shown in the gold standard for equivalent sections? If not, improve before moving on.
+
+At each decision point, check the gold standard's decision log. If you're facing a similar choice, follow the documented reasoning. If the situation is genuinely different, note why you're deviating.
 
 If a step requires human judgment, pause and ask.
 
-## Step 4: Self-Evaluate Against the Gold Standard
+## Step 4: Run the Quality Checklist
 
-After producing the complete output, score it honestly using the evaluation criteria.
-
-Present the evaluation:
+After producing the complete output, go through every item in `checklist.md`:
 
 ```
-## Output Evaluation
+## Quality Checklist
 
-| Dimension | Score (1-5) | Rationale |
-|-----------|-------------|-----------|
-| {dim 1}   | {score}     | {why — reference specific parts of your output} |
-| {dim 2}   | {score}     | {why} |
-| ...       | ...         | ... |
-| **Total** | **{sum}** / {max} | |
+### Must-Have
+- [ ] PASS / FAIL — {checklist item} — Evidence: "{quote from your output}"
+- [ ] PASS / FAIL — {checklist item} — Evidence: "{quote}"
+...
 
-Passing score: {from criteria} | Your score: {sum}
-Target score: {from criteria} | Status: {PASS / BELOW TARGET / FAIL}
+### Should-Have
+- [ ] PASS / FAIL — {checklist item} — Evidence: "{quote}"
+...
+
+### Nice-to-Have
+- [ ] PASS / FAIL — {checklist item} — Evidence: "{quote}"
+...
+
+**Result:** {N}/{total} passed | Must-haves: {all passed / X failed} | Should-haves: {N}/{M} passed
 ```
 
-## Step 5: Structural Comparison
+Rules:
+- Every item gets a one-line evidence citation — quote the specific part of your output that proves pass/fail
+- No evidence = FAIL (if you can't point to proof, it didn't happen)
+- Be honest. A checklist only works if you don't rationalize borderline items as passes.
 
-Compare your output against the gold standard:
+## Step 5: Revise if Needed
 
-1. **Structure match**: Same sections/components? Note missing or extra sections.
-2. **Depth match**: Same level of detail? Note where you went deeper or shallower.
-3. **Quality delta**: For the 1-2 weakest dimensions, quote the gold standard's equivalent section and yours side-by-side, explaining the gap.
+**Any must-have failed:** Stop. Revise the specific failing sections. Re-check ONLY the items that failed (don't re-run the whole checklist). Present the revision with updated checklist.
 
-## Step 6: Revise if Needed
+**Less than 2/3 should-haves passed:** Flag to the user: "Output is below standard on {N} should-have items. Want me to revise, or is this acceptable for your use case?" Let the user decide — not every run needs perfection.
 
-**Below target score**: Identify the 1-2 weakest dimensions, revise those sections using the gold standard as reference, re-score, present both original and revised with scores.
+## Step 6: Anti-Pattern Scan
 
-**Below passing score**: Flag to the user: "Output is below minimum quality. Recommend revision before using." Offer to revise or let the user decide.
+Do one final check against the gold standard's anti-patterns list. For each anti-pattern:
+- Did you avoid it? (yes/no)
+- If no: where in your output does it appear?
+
+This catches issues the checklist might miss — the checklist covers what SHOULD be there, anti-patterns cover what SHOULDN'T.
 
 ## Step 7: Save Run Record (Optional)
 
-If tracking is desired, save to `process-library/{name}/runs/{YYYY-MM-DD}-{brief-description}.md`:
+If the user wants to track runs, save to `process-library/{name}/runs/{YYYY-MM-DD}-{brief-description}.md`:
 
 ```
 Date: {date}
 Context: {what this was applied to}
-Score: {X}/{Y} ({STATUS})
-Strengths: {what scored well}
-Gaps: {what scored low}
-Revised: {yes/no}
+Checklist: {N}/{total} passed (must-haves: {status})
+Anti-patterns avoided: {N}/{total}
+Key decisions: {any deviations from gold standard decision log, and why}
 ```
 
 ## Output
 
 Present to the user:
 1. The complete process output
-2. The evaluation table
-3. The structural comparison with the gold standard
-4. If revised: the revision and updated score
+2. The quality checklist with evidence
+3. Anti-pattern scan results
+4. One-line summary: "{N}/{total} checks passed. {Must-have status}. {Key decision or deviation if any.}"
 
-End with: "Process `{name}` complete. Score: {X}/{Y} ({STATUS})."
+Tip: "Next time, run this directly with `/{process-name}`."

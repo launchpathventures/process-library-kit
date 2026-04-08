@@ -3,6 +3,7 @@
 **Created:** {YYYY-MM-DD}
 **Last updated:** {YYYY-MM-DD}
 **Extracted from:** {description of the original work this came from}
+**Slash command:** `/{process-name}`
 **Times run:** 0
 
 ## When to Use

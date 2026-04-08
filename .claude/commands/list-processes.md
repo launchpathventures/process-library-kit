@@ -1,32 +1,35 @@
 # List Processes
 
-Browse the process library.
+Browse the process library and show available slash commands.
 
 ## Process
 
 1. Read `process-library/README.md` for the index
 2. If README is stale, scan `process-library/*/process.md` to build the list dynamically
-3. For each process, extract from `process.md`:
+3. Check `.claude/commands/` for matching slash commands per process
+4. For each process, extract from `process.md`:
    - **Name**: Process name
+   - **Slash command**: The direct invocation (e.g., `/{name}`)
    - **Description**: One-line summary (from "When to Use")
    - **Steps**: Number of steps
+   - **Checklist items**: Number of quality checks
    - **Last used**: Most recent file in `runs/`, or "never"
-   - **Gold standard**: What the exemplar was based on
 
 Present as:
 
 ```
 ## Process Library
 
-| Process | Description | Steps | Last Used | Gold Standard |
-|---------|-------------|-------|-----------|---------------|
-| {name}  | {desc}      | {n}   | {date}    | {source}      |
+| Command | Description | Steps | Checks | Last Used |
+|---------|-------------|-------|--------|-----------|
+| `/{name}` | {desc} | {n} | {n} | {date} |
 ```
 
 If the library is empty:
 
 "No processes yet. After completing work, run `/extract-process` to capture it."
 
-After listing, offer:
-- `/run-process {name}` — execute a process
-- `/extract-process` — capture a new one from recent work
+After listing:
+- "Run any process directly: `/{name} [context]`"
+- "Or use the generic runner: `/run-process {name} [context]`"
+- "Extract a new process: `/extract-process`"

@@ -2,7 +2,7 @@
 
 A drop-in toolkit that gives Claude Code the ability to **extract repeatable processes from your work**, **replay them with quality evaluation**, and **build a cumulative library** of how you get things done.
 
-Every process includes a **gold standard** — a real example of excellent output — and a **scoring rubric** so Claude can evaluate its work against what good actually looks like.
+Every process includes a **gold standard** (curated exemplar + decision log + anti-patterns) and a **binary quality checklist** so Claude evaluates honestly instead of giving itself 4/5 on everything.
 
 ## The Problem
 
@@ -14,13 +14,15 @@ You do great work with Claude Code, but:
 
 ## The Solution
 
-Three slash commands that turn Claude Code into a process-aware collaborator:
+Extract processes from real work, then invoke them directly by name:
 
-| Command | What it does |
-|---------|-------------|
-| `/extract-process` | After finishing work, analyze what was done and capture it as a reusable process |
-| `/run-process {name}` | Execute a saved process with gold-standard quality evaluation |
-| `/list-processes` | Browse your process library |
+```
+/extract-process                          # capture what you just did
+/api-endpoint-scaffold for notifications  # run it again later (auto-generated command)
+/list-processes                           # browse everything
+```
+
+Each extracted process automatically creates its own slash command — no need to remember names or use a generic runner.
 
 ## How It Works
 
@@ -32,22 +34,27 @@ After completing significant work, Claude asks: *"This looks like a repeatable p
 
 ### 3. `/extract-process` captures the pattern
 Claude analyzes the git diff and conversation to extract:
-- **The steps** — what was done, in what order, with what inputs
-- **The gold standard** — the actual output you just produced, annotated with why it's good
-- **Evaluation criteria** — a 4-6 dimension scoring rubric with concrete 1-5 descriptions
 
-### 4. Next time, `/run-process {name}`
+- **The steps** — what was done, in what order, with what inputs
+- **The gold standard** — three parts:
+  - **Exemplar**: A curated excerpt (the critical 20-30% of your output, not the whole thing)
+  - **Decision log**: The 3-6 key tradeoffs that shaped the output ("we chose X over Y because Z")
+  - **Anti-patterns**: 3-5 concrete things that would make the output BAD
+- **Quality checklist** — binary pass/fail items (not a numeric rubric)
+- **A slash command** — `/{process-name}` for direct invocation
+
+### 4. Next time, `/{process-name}`
 Claude loads the process, studies the gold standard, follows the steps, then:
-- **Scores its own output** against the rubric (1-5 per dimension)
-- **Compares structurally** against the gold standard (same sections? same depth?)
-- **Auto-revises** if below target score
-- **Saves a run record** for quality tracking over time
+- Runs every checklist item as PASS/FAIL with evidence citations
+- Checks output against the anti-patterns list
+- Auto-revises if any must-have check fails
+- Saves a run record for quality tracking
 
 ### 5. The library grows and improves
 - Gold standards get replaced when better examples emerge
 - Steps refine as runs reveal gaps
-- Run records show quality trends
-- Only processes worth repeating get captured
+- Anti-patterns accumulate from real failures
+- Checklist items sharpen from real usage
 
 ---
 
@@ -82,112 +89,121 @@ cp process-library-kit/CLAUDE.md YOUR_PROJECT/CLAUDE.md
 
 ### Step 3: Start working
 
-That's it. Next time you finish a piece of work, Claude will suggest running `/extract-process`. Or run it yourself anytime:
-
-```
-/extract-process
-```
+That's it. After finishing work, run `/extract-process`. Each extracted process becomes its own slash command.
 
 ---
 
 ## What a Process Looks Like
 
-Each extracted process lives in `process-library/{name}/` with three files:
+Each extracted process creates four artifacts:
 
-### `process.md` — The Definition
+### `process-library/{name}/process.md` — The Steps
 
 ```markdown
 # Process: API Endpoint Scaffold
 
 **Created:** 2026-04-08
 **Extracted from:** Building the /api/v1/users endpoint
+**Slash command:** `/api-endpoint-scaffold`
 
 ## When to Use
-When creating a new REST API endpoint that follows our standard patterns.
+When creating a new REST API endpoint. NOT for modifying existing endpoints.
 
 ## Steps
-### 1. Define the Route
-### 2. Write the Handler
-### 3. Add Validation
-### 4. Write Tests
+### 1. Define the Route Schema
+### 2. Write the Handler with Validation-First Pattern
+### 3. Add Error Response Formatting
+### 4. Write Tests (Happy Path + Edge Cases)
 ### 5. Update API Docs
 ```
 
-### `gold-standard.md` — What Good Looks Like
+### `process-library/{name}/gold-standard.md` — The Reference
 
-A real, annotated example of excellent output from the original work. Not a hypothetical — the actual artifact, with comments explaining why each part is good.
+Three sections that actually help future runs:
 
 ```markdown
 # Gold Standard: API Endpoint Scaffold
 
-Source: /api/v1/users endpoint (built 2026-04-08)
+## Exemplar
+{The critical 20-30% of the actual output — just the handler function, not every file}
 
-## The Output
+## Decision Log
+### Decision 1: Zod over manual validation
+- **Alternatives:** Manual if/else checks, joi, yup
+- **Why Zod:** Co-locates schema with TypeScript types, better error formatting
+- **Would change if:** Project already uses joi everywhere — consistency over ideal
 
-<!-- GOOD: Input validation happens before any business logic -->
-const schema = z.object({
-  email: z.string().email(),
-  name: z.string().min(1).max(100),
-});
+### Decision 2: Validate before any side effects
+- **Alternatives:** Validate inline as fields are used
+- **Why up-front:** Prevents partial state corruption if later fields fail
+- **Would change if:** Never — this is a hard rule
 
-<!-- GOOD: Error responses use consistent format with actionable messages -->
-if (!result.success) {
-  return Response.json({ error: result.error.format() }, { status: 400 });
-}
+## Anti-Patterns
+### 1. Business logic before validation
+- **What it looks like:** Database queries or mutations before input is validated
+- **Why it's bad:** Invalid input can corrupt state before validation catches it
+- **Instead:** Always validate at the top of the handler
 ```
 
-### `evaluation-criteria.md` — The Scoring Rubric
+### `process-library/{name}/checklist.md` — The Quality Gate
+
+Binary pass/fail with evidence required:
 
 ```markdown
-# Evaluation Criteria: API Endpoint Scaffold
+# Quality Checklist: API Endpoint Scaffold
 
-**Passing score:** 15 / 25
-**Target score:** 20 / 25
+## Must-Have
+- [ ] Input validation happens before any business logic or side effects
+- [ ] Every error response includes a machine-readable error code
+- [ ] At least one test covers the happy path end-to-end
+- [ ] Route is registered and reachable (verified by running the test)
 
-### 1. Input Validation
-| Score | Description |
-|-------|-------------|
-| 1     | No validation, raw input passed to business logic |
-| 3     | Basic type checking, but missing edge cases |
-| 5     | Comprehensive schema validation with clear error messages |
+## Should-Have
+- [ ] Error messages are specific enough to diagnose without checking logs
+- [ ] Test covers at least one invalid-input scenario
+- [ ] Response types are explicitly typed (no `any`)
 
-### 2. Error Handling
-...
+## Nice-to-Have
+- [ ] Tests cover at least one edge case per validation rule
+- [ ] OpenAPI/Swagger doc is updated
 ```
+
+### `.claude/commands/{name}.md` — The Slash Command
+
+Auto-generated so you type `/{name}` directly instead of `/run-process {name}`.
 
 ---
 
-## Evaluation in Action
+## Why This Design
 
-When you run `/run-process api-endpoint-scaffold`, Claude produces the output then self-evaluates:
+### Gold standard: curated excerpt + decisions + anti-patterns (not annotated dump)
 
-```
-## Output Evaluation
+**Problem with v1:** "Dump the whole output and annotate why it's good" doesn't work. Real outputs are hundreds of lines — Claude skims them. Annotations like `<!-- GOOD: clean separation -->` are vague and self-congratulatory.
 
-| Dimension        | Score (1-5) | Rationale                                    |
-|------------------|-------------|----------------------------------------------|
-| Input Validation | 4           | Schema covers all fields, missing one edge case |
-| Error Handling   | 5           | Matches gold standard format exactly          |
-| Test Coverage    | 3           | Happy path covered, missing error scenarios   |
-| Documentation    | 4           | OpenAPI spec complete, examples could be richer |
-| **Total**        | **16** / 20 |                                               |
+**What actually helps:** The *decisions* that shaped the output, not the output itself. "We chose Zod over manual validation because..." is actionable. "This is good code" is not. The anti-patterns give specific guardrails. The exemplar is small enough to actually study.
 
-Target: 17/20 | Status: BELOW TARGET
+### Checklist: binary pass/fail (not 1-5 rubric)
 
-Revising test coverage and documentation sections...
-```
+**Problem with v1:** Numeric self-scoring is grading your own homework. Claude will rationalize a 4 on everything because 3 feels harsh and 5 feels overconfident. The scores become meaningless.
 
-Claude then revises the weak areas using the gold standard as reference and re-scores.
+**What actually works:** Binary forces honesty. "Does every endpoint validate input before processing?" — either it does or it doesn't. The evidence citation requirement ("quote the specific line") makes it impossible to hand-wave.
+
+### Slash commands: auto-generated per process (not `/run-process {name}`)
+
+**Problem with v1:** Users have to remember process names and type `/run-process api-endpoint-scaffold`. Friction kills adoption.
+
+**What actually works:** Each process generates its own `.claude/commands/{name}.md`. Type `/{name}` directly. The process library becomes a growing set of slash commands that show up in Claude Code's command palette.
 
 ---
 
 ## Tips
 
-- **Start small**: Extract your first process from work you just did. Don't try to pre-build a library.
-- **Real gold standards only**: Hypothetical examples don't anchor quality. Use actual output.
-- **Update as you go**: After a few runs, you'll notice steps that are missing or unnecessary. Edit the process.
-- **Not everything is a process**: One-off fixes, trivial tasks, and exploratory work don't need capturing. Only extract patterns you'll repeat.
-- **Run records are optional**: Start without them. Add tracking later for processes you run frequently and want to monitor quality trends.
+- **Start small**: Extract your first process from work you just did. Don't pre-build a library.
+- **Real exemplars only**: Use actual output, not hypotheticals. Curate it down to the critical 20-30%.
+- **Decision log is king**: This is the most valuable part of the gold standard. 3 good decisions beat 30 lines of annotated code.
+- **Update anti-patterns from failures**: When a process run produces bad output, add the failure mode to the anti-patterns list.
+- **Checklist items must be verifiable by a stranger**: If a checklist item requires subjective judgment, rewrite it until it's binary.
+- **Not everything is a process**: One-off fixes, trivial tasks, and exploratory work don't need capturing.
 
 ## File Structure
 
@@ -195,19 +211,21 @@ Claude then revises the weak areas using the gold standard as reference and re-s
 your-project/
 ├── CLAUDE.md                              <- add the process library section
 ├── .claude/commands/
-│   ├── extract-process.md                 <- /extract-process
-│   ├── run-process.md                     <- /run-process
-│   └── list-processes.md                  <- /list-processes
+│   ├── extract-process.md                 <- /extract-process (core kit)
+│   ├── run-process.md                     <- /run-process (generic runner)
+│   ├── list-processes.md                  <- /list-processes
+│   ├── api-endpoint-scaffold.md           <- auto-generated per process
+│   └── competitive-research.md            <- auto-generated per process
 └── process-library/
-    ├── README.md                          <- library index (auto-maintained)
+    ├── README.md                          <- library index
     ├── _template.md                       <- process definition template
-    ├── _evaluation-rubric.md              <- scoring rubric template
-    └── {process-name}/                    <- one directory per process
+    ├── _gold-standard-template.md         <- gold standard template
+    ├── _checklist-template.md             <- quality checklist template
+    └── {process-name}/
         ├── process.md
         ├── gold-standard.md
-        ├── evaluation-criteria.md
+        ├── checklist.md
         └── runs/                          <- optional score history
-            └── 2026-04-08-first-run.md
 ```
 
 ## License

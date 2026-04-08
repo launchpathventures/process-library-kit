@@ -38,54 +38,128 @@ For each step document:
 - **Output**: What this step produces
 - **Judgment calls**: Where human decisions are needed (or "none")
 
-## Step 3: Create the Gold Standard
+## Step 3: Build the Gold Standard
 
-The work just completed IS the gold standard (or its basis). Extract the most representative output — the file, document, code, or artifact that best shows "what good looks like."
+The gold standard is NOT the entire output dumped into a file. It is a curated reference that makes future runs better. Build it in three sections:
 
-Rules:
-- Must be a real artifact from real work, not a hypothetical
-- Should be the OUTPUT of the process, not the process itself
-- Include enough context that someone unfamiliar could understand why it's good
-- **Annotate it**: Add brief inline comments explaining what makes each section good (use `<!-- GOOD: reason -->` comments or a "Why this is good" section)
+### Section A: The Exemplar (curated excerpt)
 
-If the output had flaws, note them honestly. A gold standard with acknowledged caveats is better than a dishonest one.
+Pick the **most representative 20-30% of the output** — the part that best demonstrates the pattern. This is the critical excerpt, not the whole thing.
 
-## Step 4: Define Evaluation Criteria
+- If the output was code: the most important file or function, not every file touched
+- If the output was a document: the best section, not the full doc
+- If the output was research: the key findings and the structure, not every detail
 
-Create a scoring rubric with 4-6 dimensions. Each dimension:
-- Has a 1-5 scale with concrete descriptions for levels 1, 3, and 5
-- Is specific to THIS type of work
+Include the excerpt in full, exactly as produced (real artifact, not hypothetical).
 
-Choose dimensions that fit (don't use all):
-- **Completeness**: Are all required elements present?
-- **Correctness**: Is content factually/technically accurate?
-- **Clarity**: Is the output easy to understand?
-- **Consistency**: Does it follow conventions?
-- **Specificity**: Are claims concrete and evidenced, or vague?
-- **Actionability**: Can someone act on this without further clarification?
-- **Scope discipline**: Does it stay within bounds?
+### Section B: Decision Log
 
-Define:
-- **Minimum passing score**: Below this, output must be revised
-- **Target score**: What good process execution achieves
+Document the **key decisions and tradeoffs** that shaped the output. This is what actually makes a gold standard useful — not "this is good" annotations, but "we chose X over Y because Z."
+
+For each decision:
+- **Decision**: What was chosen
+- **Alternatives considered**: What else could have been done
+- **Why this choice**: The reasoning
+- **What would change it**: Under what conditions you'd choose differently
+
+3-6 decisions is typical. These are what prevent future runs from making worse choices.
+
+### Section C: Anti-Patterns
+
+List 3-5 concrete things that would make this output BAD. These are more useful than vague praise because they give Claude specific things to avoid.
+
+Format:
+- **Anti-pattern**: {what bad looks like}
+- **Why it's bad**: {the consequence}
+- **What to do instead**: {the fix}
+
+Example: "Anti-pattern: Adding validation after business logic. Why: Input could corrupt state before validation catches it. Instead: Validate at the top of the handler before any side effects."
+
+## Step 4: Build the Quality Checklist
+
+Instead of a numeric rubric (which Claude will game by giving itself 4s), create a **binary checklist** — each item is PASS or FAIL with no middle ground.
+
+Create 8-12 checklist items organized into three tiers:
+
+### Must-Have (all must pass, or output needs revision)
+Items where failure means the output is not usable. 4-5 items.
+- Each item is a concrete, verifiable yes/no question
+- Example: "Does every API endpoint validate input before processing?"
+
+### Should-Have (most should pass)
+Items where failure means the output is below standard but still usable. 3-4 items.
+- Example: "Are error messages specific enough to diagnose without checking logs?"
+
+### Nice-to-Have (bonus quality)
+Items that distinguish good from great. 2-3 items.
+- Example: "Does the test suite include at least one edge case per validation rule?"
+
+**Passing criteria:**
+- All must-haves pass
+- At least 2/3 of should-haves pass
+
+**Why a checklist, not a 1-5 rubric:** Numeric self-scoring is unreliable — Claude will rationalize a 4 on everything. Binary pass/fail forces honest assessment: either the input IS validated before processing, or it isn't. No wiggle room.
 
 ## Step 5: Write the Files
 
-Create three files using the templates in `process-library/`:
+Create the process directory and files:
 
 1. `process-library/{name}/process.md` — use `process-library/_template.md`
-2. `process-library/{name}/gold-standard.md` — the annotated exemplar
-3. `process-library/{name}/evaluation-criteria.md` — the rubric from `process-library/_evaluation-rubric.md`
+2. `process-library/{name}/gold-standard.md` — three sections from Step 3
+3. `process-library/{name}/checklist.md` — the quality checklist from Step 4
 
 Update `process-library/README.md` to include the new process in the index table.
 
-## Step 6: Verify
+## Step 6: Generate the Slash Command
 
-Read all three files back and check:
+This is critical — create a dedicated slash command so the user can invoke this process directly without remembering the name.
+
+Create `.claude/commands/{process-name}.md` with this content:
+
+```markdown
+# {Process Title}
+
+You are executing the **{process-name}** process. This is a repeatable process extracted from real work.
+
+## Context from user
+
+$ARGUMENTS
+
+## Load the process
+
+Read these files in order:
+1. `process-library/{process-name}/gold-standard.md` — study this FIRST. Internalize the decisions, the anti-patterns, and the exemplar quality level.
+2. `process-library/{process-name}/process.md` — the steps to follow.
+3. `process-library/{process-name}/checklist.md` — the quality checklist you will evaluate against when done.
+
+## Execute
+
+Follow the steps in `process.md`. At each step, refer back to the gold standard's decision log — if you face a similar decision, follow the same reasoning unless the user's context demands otherwise.
+
+## Evaluate
+
+After completing all steps, run through every item in `checklist.md`:
+- For each item, state PASS or FAIL with a one-line evidence citation (quote the specific part of your output)
+- If any must-have fails: stop and revise before presenting to the user
+- Present the checklist results alongside your output
+
+## Output
+
+Present:
+1. Your complete output
+2. The checklist evaluation (with evidence per item)
+3. A one-line summary: "{N}/{total} checks passed. {Must-have status}. {Any notable decisions made.}"
+```
+
+## Step 7: Verify
+
+Read all files back and check:
 - Could someone unfamiliar follow this process?
-- Is the gold standard genuinely good?
-- Are evaluation criteria concrete enough to score without debate?
-- Does the process match what was ACTUALLY done, not what you wish was done?
+- Is the gold standard exemplar genuinely representative (not the whole output, just the critical part)?
+- Does the decision log capture real tradeoffs (not just "we did the obvious thing")?
+- Are anti-patterns concrete enough to recognize?
+- Are checklist items binary and verifiable (not subjective)?
+- Does the slash command work as a standalone invocation?
 
 ## Output
 
@@ -94,10 +168,12 @@ Tell the user:
 ```
 Process extracted: `{name}`
 
+Files created:
 - `process-library/{name}/process.md` — {N} steps
-- `process-library/{name}/gold-standard.md` — based on {source artifact}
-- `process-library/{name}/evaluation-criteria.md` — {N} dimensions, passing score {X}/{Y}
+- `process-library/{name}/gold-standard.md` — exemplar + {N} decisions + {N} anti-patterns
+- `process-library/{name}/checklist.md` — {N} checks ({N} must-have, {N} should-have, {N} nice-to-have)
+- `.claude/commands/{name}.md` — invoke directly with `/{name}`
 
-To run: `/run-process {name}`
-To browse: `/list-processes`
+To run this process: `/{name} [context about what to apply it to]`
+To browse all processes: `/list-processes`
 ```
